@@ -6,18 +6,33 @@
 #include "dfs.h"
 #include "synch.h"
 
-//static dfs_inode inodes[/*specify size*/ ]; // all inodes
-//static dfs_superblock sb; // superblock
-//static uint32 fbv[/*specify size*/]; // Free block vector
+static dfs_inode inodes[DFS_INODE_MAX_NUM]; // all inodes
+static dfs_superblock sb; // superblock
+static uint32 fbv[DFS_FBV_MAX_NUM_WORDS]; // Free block vector
+
+static bool fs_open = false;
 
 static uint32 negativeone = 0xFFFFFFFF;
 static inline uint32 invert(uint32 n) { return n ^ negativeone; }
 
 // You have already been told about the most likely places where you should use locks. You may use 
 // additional locks if it is really necessary.
+static lock_t fbv_lock;
+static lock_t inode_lock;
 
 // STUDENT: put your file system level functions below.
 // Some skeletons are provided. You can implement additional functions.
+void PrintSuperBlockStatus()
+{
+	printf("Super Block Status\n");
+	printf("Valid: %d\n", sb.valid);
+	printf("Block Size: %d\n", sb.block_size);
+	printf("Total Blocks: %d\n", sb.num_blocks);
+	printf("Inode Start: %d\n", sb.start_block_num_inodes_array);
+	printf("Size Inode Array: %d\n", sb.size_inodes_array);
+	printf("Start Block Number FBV: %d\n", sb.start_block_num_fbv);
+	printf("Data Block Start: %d\n", sb.data_block_start);
+}
 
 ///////////////////////////////////////////////////////////////////
 // Non-inode functions first
@@ -31,7 +46,17 @@ static inline uint32 invert(uint32 n) { return n ^ negativeone; }
 void DfsModuleInit() {
 // You essentially set the file system as invalid and then open 
 // using DfsOpenFileSystem().
+	DfsInvalidate(); //Set file system as invalid
+	DfsOpenFileSystem();
 
+	//Allocate Locks, if I did it by the static variables, this might not
+	//run properly on multiple machines
+	fbv_lock = LockCreate();
+	inode_lock = LockCreate();
+	
+	printf("DfsModuleInit Running\n");
+
+	return;
 }
 
 //-----------------------------------------------------------------
@@ -43,8 +68,10 @@ void DfsModuleInit() {
 
 void DfsInvalidate() {
 // This is just a one-line function which sets the valid bit of the 
-// superblock to 0.
-
+// superblock to n;
+/	//super block is no longer valid
+	sb.valid = false;
+	return;
 }
 
 //-------------------------------------------------------------------
@@ -53,24 +80,45 @@ void DfsInvalidate() {
 // failure.
 //-------------------------------------------------------------------
 
-int DfsOpenFileSystem() {
-//Basic steps:
-// Check that filesystem is not already open
+int DfsOpenFileSystem() 
+{
 
-// Read superblock from disk.  Note this is using the disk read rather 
-// than the DFS read function because the DFS read requires a valid 
-// filesystem in memory already, and the filesystem cannot be valid 
-// until we read the superblock. Also, we don't know the block size 
-// until we read the superblock, either.
+	int i;
+	disk_block buffer;
+	int ret_val;
+	char * ptr;
 
-// Copy the data from the block we just read into the superblock in memory
+	// Basic steps:
+	// Check that filesystem is not already open
+	if(fs_open == true) //Check whether or not file system was open before initialization
+	{
+		return DFS_FAIL;
+	}
 
-// All other blocks are sized by virtual block size:
-// Read inodes
-// Read free block vector
-// Change superblock to be invalid, write back to disk, then change 
-// it back to be valid in memory
+	//Set the open flag
+	fs_open = true;
 
+	// Read superblock from disk.  Note this is using the disk read rather 
+	// than the DFS read function because the DFS read requires a valid 
+	// filesystem in memory already, and the filesystem cannot be valid 
+	// until we read the superblock. Also, we don't know the block size 
+	// until we read the superblock, either.
+	ret_val = DiskReadBlock(1, &buffer);
+	if(ret_val == DISK_FAIL)
+	{
+		return DFS_FAIL;
+	}
+
+	// Copy the data from the block we just read into the superblock in memory
+	bcopy(buffer.data, (char *) (&sb), sizeof(dfs_superblock));
+
+	// All other blocks are sized by virtual block size:
+	// Read inodes
+	// Read free block vector
+	// Change superblock to be invalid, write back to disk, then change 
+	// it back to be valid in memory
+	
+	return DFS_FAIL;
 }
 
 
@@ -80,8 +128,11 @@ int DfsOpenFileSystem() {
 // version.
 //-------------------------------------------------------------------
 
-int DfsCloseFileSystem() {
-
+int DfsCloseFileSystem() 
+{
+	//Invalidate Memory's Version
+	DfsInvalidate();
+	return DFS_FAIL;
 
 }
 
@@ -95,7 +146,7 @@ uint32 DfsAllocateBlock() {
 // Check that file system has been validly loaded into memory
 // Find the first free block using the free block vector (FBV), mark it in use
 // Return handle to block
-
+	return DFS_FAIL;
 }
 
 
@@ -104,7 +155,7 @@ uint32 DfsAllocateBlock() {
 //-----------------------------------------------------------------
 
 int DfsFreeBlock(uint32 blocknum) {
-
+	return DFS_FAIL;
 }
 
 
@@ -116,7 +167,7 @@ int DfsFreeBlock(uint32 blocknum) {
 //-----------------------------------------------------------------
 
 int DfsReadBlock(uint32 blocknum, dfs_block *b) {
-
+	return DFS_FAIL;
 
 }
 
@@ -128,8 +179,10 @@ int DfsReadBlock(uint32 blocknum, dfs_block *b) {
 // on failure, and the number of bytes written on success.  
 //-----------------------------------------------------------------
 
-int DfsWriteBlock(uint32 blocknum, dfs_block *b){
-
+int DfsWriteBlock(uint32 blocknum, dfs_block *b)
+{
+		
+	return DFS_FAIL;
 }
 
 
@@ -144,7 +197,7 @@ int DfsWriteBlock(uint32 blocknum, dfs_block *b){
 //-----------------------------------------------------------------
 
 uint32 DfsInodeFilenameExists(char *filename) {
-
+	return DFS_FAIL;
 }
 
 
@@ -157,7 +210,7 @@ uint32 DfsInodeFilenameExists(char *filename) {
 //-----------------------------------------------------------------
 
 uint32 DfsInodeOpen(char *filename) {
-
+	return DFS_FAIL;
 }
 
 
@@ -170,7 +223,7 @@ uint32 DfsInodeOpen(char *filename) {
 //-----------------------------------------------------------------
 
 int DfsInodeDelete(uint32 handle) {
-
+	return DFS_FAIL;
 }
 
 
@@ -182,7 +235,7 @@ int DfsInodeDelete(uint32 handle) {
 //-----------------------------------------------------------------
 
 int DfsInodeReadBytes(uint32 handle, void *mem, int start_byte, int num_bytes) {
-
+	return DFS_FAIL;
 }
 
 
@@ -196,7 +249,7 @@ int DfsInodeReadBytes(uint32 handle, void *mem, int start_byte, int num_bytes) {
 //-----------------------------------------------------------------
 
 int DfsInodeWriteBytes(uint32 handle, void *mem, int start_byte, int num_bytes) {
-
+	return DFS_FAIL;
 
 }
 
@@ -208,7 +261,7 @@ int DfsInodeWriteBytes(uint32 handle, void *mem, int start_byte, int num_bytes) 
 //-----------------------------------------------------------------
 
 uint32 DfsInodeFilesize(uint32 handle) {
-
+	return DFS_FAIL;
 }
 
 
@@ -223,7 +276,7 @@ uint32 DfsInodeFilesize(uint32 handle) {
 //-----------------------------------------------------------------
 
 uint32 DfsInodeAllocateVirtualBlock(uint32 handle, uint32 virtual_blocknum) {
-
+	return DFS_FAIL;
 
 }
 
@@ -236,5 +289,5 @@ uint32 DfsInodeAllocateVirtualBlock(uint32 handle, uint32 virtual_blocknum) {
 //-----------------------------------------------------------------
 
 uint32 DfsInodeTranslateVirtualToFilesys(uint32 handle, uint32 virtual_blocknum) {
-
+	return DFS_FAIL;
 }

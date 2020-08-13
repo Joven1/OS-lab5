@@ -3,12 +3,13 @@
 
 #include "fdisk.h"
 
-//dfs_superblock sb;
-//dfs_inode inodes[DFS_INODE_MAX_NUM];
-//uint32 fbv[DFS_FBV_MAX_NUM_WORDS];
+dfs_superblock sb;
+dfs_inode inodes[DFS_INODE_MAX_NUM];
+uint32 fbv[DFS_FBV_MAX_NUM_WORDS];
 
 int diskblocksize = 0; // These are global in order to speed things up
 int disksize = 0;      // (i.e. fewer traps to OS to get the same number)
+int num_filesystem_blocks = 0;
 
 int FdiskWriteBlock(uint32 blocknum, dfs_block *b); //You can use your own function. This function 
 //calls disk_write_block() to write physical blocks to disk
@@ -17,28 +18,107 @@ void main (int argc, char *argv[])
 {
 	// STUDENT: put your code here. Follow the guidelines below. They are just the main steps. 
 	// You need to think of the finer details. You can use bzero() to zero out bytes in memory
+	int i,j; //Loop Control Variable 
+	dfs_block block; 
+ 
+	Printf("\n\n======FDISK START======\n\n");	
+	
+//Initializations and argc check
+	if(argc != 1)
+	{
+		Printf("ERROR: No Input\n\n");
+		Exit();
+	}
 
-  //Initializations and argc check
 
   // Need to invalidate filesystem before writing to it to make sure that the OS
   // doesn't wipe out what we do here with the old version in memory
   // You can use dfs_invalidate(); but it will be implemented in Problem 2. You can just do 
   // sb.valid = 0
 
+	dfs_invalidate();
+
   //disksize = 
   //diskblocksize = 
   //num_filesystem_blocks = 
 
-  // Make sure the disk exists before doing anything else
- 
+	//Check Size of dfs_inode
+	if(sizeof(dfs_inode) != 96)
+	{
+		Printf("Error: DFS Inode is not 96 bytes!\n");
+		Exit();
+	}	
+	else
+	{
+		Printf("Success: DFS Inode is 96 bytes!\n");
+	}
+  	Printf("The size of the dfs_inode is %d\n", sizeof(dfs_inode));
+	disksize = disk_size();
+	diskblocksize = disk_blocksize();
+	num_filesystem_blocks = DFS_NUM_BLOCKS;
+	
+	//Print out the Sizes 
+	//Initialize the Super Block
+	sb.block_size = DFS_BLOCKSIZE;
+	sb.num_blocks = DFS_NUM_BLOCKS;
+	sb.start_block_num_inodes_array = FDISK_INODE_BLOCK_START;
+	sb.size_inodes_array = FDISK_NUM_INODES;
+	sb.start_block_num_fbv = FDISK_FBV_BLOCK_START;
+	sb.data_block_start = FDISK_DATA_BLOCK_START;	
+  
+	// Make sure the disk exists before doing anything else
+	if(disk_create() == DISK_FAIL)
+	{
+		Printf("Error: Disk does not exist!\n");
+		Exit();
+	}	
 
-  // Write all inodes as not in use and empty (all zeros)
-  // Next, setup free block vector (fbv) and write free block vector to the disk
-  // Finally, setup superblock as valid filesystem and write superblock and boot record to disk: 
-  // boot record is all zeros in the first physical block, and superblock structure goes into the second physical block
-  Printf("fdisk (%d): Formatted DFS disk for %d bytes.\n", getpid(), disksize);
+  	// Write all inodes as not in use and empty (all zeros)
+	for(i = 0; i < 	DFS_INODE_MAX_NUM; i++)
+	{
+		inodes[i].inuse = false;
+		inodes[i].size = 0;
+		inodes[i].filename[0] = '\0';
+		for(j = 0; j < DFS_VB_TRANSLATION_TABLE_SIZE; j++)
+		{
+			inodes[i].vb_translation_table[j] = 0;
+		}
+		inodes[i].block_num_indirect_index = 0;
+	}
+
+  	// Next, setup free block vector (fbv) and write free block vector to the disk
+  	for(i = 0; i < DFS_FBV_MAX_NUM_WORDS; i++)
+	{
+		fbv[i] = 0; //0 Means it's free
+	}
+	
+	fbv[0] = 0xFFFFE000; //Blocks 0-19 are inuse by the DFS
+
+	
+  
+	// Finally, setup superblock as valid filesystem and write superblock and boot record to disk: 
+	sb.valid = true;
+  
+	// boot record is all zeros in the first physical block, and superblock structure goes into the second physical block
+	bcopy((char *) &sb, block.data, sizeof(dfs_superblock));
+	FdiskWriteBlock(1, &block);
+	
+	for(i = 0; i < FDISK_NUM_INODES; i += 2)
+	{
+		bcopy((char *) (inodes + i), block.data, 2* sizeof(dfs_inode));
+		FdiskWriteBlock(2 + (i/2), &block);
+	}
+  	
+
+	Printf("fdisk (%d): Formatted DFS disk for %d bytes.\n", getpid(), disksize);
 }
 
 int FdiskWriteBlock(uint32 blocknum, dfs_block *b) {
   // STUDENT: put your code here
+  	if(disk_write_block(blocknum, b->data) == DISK_FAIL)
+	{
+		Printf("Failed to write block onto disk\n");
+		Exit();
+	}
+	return DISK_SUCCESS;
 }
