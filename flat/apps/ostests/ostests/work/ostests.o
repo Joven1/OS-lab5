@@ -1,4 +1,8 @@
 ; Compiled by GCC
+.data
+	.align 2
+LC0:
+	.ascii "\n\nRunning OS Tests\n\n\000"
 .text
 	.align 2
 .proc _main
@@ -11,8 +15,15 @@ _main:
 	subui	r29,r29,#8	; alloc local storage
 	jal	___main
 	nop	; not filled.
+	addi	r29,r29,#-8
+	lhi	r1,((LC0)>>16)&0xffff
+	addui	r1,r1,(LC0)&0xffff
+	sw	(r29),r1
+	jal	_Printf
+	nop	; not filled.
 	jal	_run_os_tests
 	nop	; not filled.
+	addi	r29,r29,#8
 	jal	_exit
 	nop
 .endproc _main

@@ -20,7 +20,8 @@ void main (int argc, char *argv[])
 	// You need to think of the finer details. You can use bzero() to zero out bytes in memory
 	int i,j; //Loop Control Variable 
 	dfs_block block; 
- 
+	uint32 ptr; 
+
 	Printf("\n\n======FDISK START======\n\n");	
 	
 //Initializations and argc check
@@ -72,7 +73,7 @@ void main (int argc, char *argv[])
 		Printf("Error: Disk does not exist!\n");
 		Exit();
 	}	
-
+/*
   	// Write all inodes as not in use and empty (all zeros)
 	for(i = 0; i < 	DFS_INODE_MAX_NUM; i++)
 	{
@@ -92,23 +93,49 @@ void main (int argc, char *argv[])
 		fbv[i] = 0; //0 Means it's free
 	}
 	
-	fbv[0] = 0xFFFFE000; //Blocks 0-19 are inuse by the DFS
+	fbv[0] = 0xFFFFF800; //Blocks 0-20 are inuse by the DFS (TODO: see if it's 0-20 instead
 
-	
-  
+	ptr = (char *) &(fbv[0]);
+	for(i = sb.start_block_num_fbv; i < sb.data_block_start; i++)
+	{
+		Printf("size of data %d\n", sizeof(fbv[0]));
+		Printf("i = %d\n", i);
+		bcopy((char *) ptr, block.data, sizeof(fbv[0]));
+		Printf("Block Data: %s\n", block.data);
+		ptr = ptr + 1;
+	}
+	bzero(block.data, DFS_BLOCKSIZE);
+	bcopy(ptr, block.data, sizeof(fbv[0]));
+
+		
+	//TODO: figure out how the Free Block Vector Works 
+ 	for(i = sb.start_block_num_fbv; i < sb.data_block_start; i++)
+	{
+		bzero(block.data, DFS_BLOCKSIZE);
+		bcopy((char *) ptr, block.data, sizeof(fbv[0]));
+		FdiskWriteBlock(i,&block);
+		ptr = ptr + 1;
+	}
+
+*/
 	// Finally, setup superblock as valid filesystem and write superblock and boot record to disk: 
 	sb.valid = true;
   
 	// boot record is all zeros in the first physical block, and superblock structure goes into the second physical block
+	bzero(block.data, DFS_BLOCKSIZE);
 	bcopy((char *) &sb, block.data, sizeof(dfs_superblock));
-	FdiskWriteBlock(1, &block);
-	
+	Printf("Running writing into the super block\n");	
+	FdiskWriteBlock(1, &block);	
+
+/*	
 	for(i = 0; i < FDISK_NUM_INODES; i += 2)
 	{
 		bcopy((char *) (inodes + i), block.data, 2* sizeof(dfs_inode));
 		FdiskWriteBlock(2 + (i/2), &block);
+		Printf("Index: %d Block: %d\n", i, 2 + (i/2));
 	}
-  	
+*/  
+	//TODO: Reset and redo this user program	
 
 	Printf("fdisk (%d): Formatted DFS disk for %d bytes.\n", getpid(), disksize);
 }
@@ -122,3 +149,5 @@ int FdiskWriteBlock(uint32 blocknum, dfs_block *b) {
 	}
 	return DISK_SUCCESS;
 }
+
+
