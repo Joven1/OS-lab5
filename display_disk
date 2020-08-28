@@ -1,0 +1,28 @@
+#echo "DISPLAYING CONTENTS OF DISK ee469g00.img"
+#echo "SUPERBLOCK INFO"
+#blockprint 1 ../../../../../../tmp/ee469g00.img
+
+#printf "\n\n\n\n"
+#echo "FIRST INODE"
+
+blockprint 2 ../../../../../../tmp/ee469g00.img
+
+#printf "\n\n\n\n"
+
+#echo "LAST INODE"
+#blockprint 37 ../../../../../../tmp/ee469g00.img
+
+
+printf "\n\n\n\n"
+echo "Free Block Vector"
+
+blockprint 38 ../../../../../../tmp/ee469g00.img
+blockprint 39 ../../../../../../tmp/ee469g00.img
+blockprint 40 ../../../../../../tmp/ee469g00.img
+blockprint 41 ../../../../../../tmp/ee469g00.img
+
+
+#printf "\n\n\n\n"
+#echo "First Data Block"
+#blockprint 42 ../../../../../../tmp/ee469g00.img
+

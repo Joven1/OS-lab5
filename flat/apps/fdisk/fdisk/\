@@ -125,6 +125,8 @@ void main (int argc, char *argv[])
 
 	ptr = (char *) &(inodes[0]);
 
+	inodes[3].inuse = true;
+	inodes[3].size = 0xEEEEEEEE;
 	
 	for(i = 0; i < FDISK_INODE_NUM_BLOCKS; i++)
 	{

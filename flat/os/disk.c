@@ -71,7 +71,6 @@ int DiskWriteBlock (uint32 blocknum, disk_block *b) {
   int fsfd = -1;
   uint32 intrvals = 0;
   char *filename = NULL;
-
   if (blocknum >= DISK_NUMBLOCKS) {
     printf("DiskWriteBlock: cannot write to block larger than filesystem size\n");
     return DISK_FAIL;
