@@ -44,7 +44,6 @@ void RunOSTests() {
   DfsInodeFilenameExists("marp.txt");
   DfsInodeFilenameExists("areallylongfilenamethisistolongtobeinaninodesothereshouldbeanerror.txt");
 
-	printf("Made it to INODE SCENARIO 0\n\n");
   /******** INODE SCENARIO 0: Tests Opening inodes, including ones with filenames that are too long ********/
   if ((handleMeep = DfsInodeOpen("meep.txt")) == DFS_FAIL) {
     printf("ostests: Opening meep.txt failed!\n");
@@ -67,8 +66,6 @@ void RunOSTests() {
     printf("ostests: opening areallylongfilenamethisistolongtobeinaninodesothereshouldbeanerror.txt succeeded!\n");
     GracefulExit();
   }
-
-  printf("\n\n");
 
   /******** INODE SCENARIO 1: Attempts writing and reading a simple string from the first byte position of an inode, as well as including file size verification ********/
   printf("ostests: Starting INODE SCENARIO 1\n");

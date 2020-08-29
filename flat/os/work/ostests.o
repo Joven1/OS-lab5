@@ -209,152 +209,149 @@ LC3:
 	.ascii "\000"
 	.align 2
 LC4:
-	.ascii "Made it to INODE SCENARIO 0\n\n\000"
-	.align 2
-LC5:
 	.ascii "ostests: Opening meep.txt failed!\n\000"
 	.align 2
-LC6:
+LC5:
 	.ascii "ostests: Opening marp.txt failed!\n\000"
 	.align 2
-LC7:
+LC6:
 	.ascii "herpaderp.txt\000"
 	.align 2
-LC8:
+LC7:
 	.ascii "ostests: Opening herpaderp.txt failed!\n\000"
 	.align 2
-LC9:
+LC8:
 	.ascii "ostests: opening areallylongfilenamethisistolongtobeinaninodesotheresh"
 	.ascii "ouldbeanerror.txt succeeded!\n\000"
 	.align 2
-LC10:
-	.ascii "\n\n\000"
-	.align 2
-LC11:
+LC9:
 	.ascii "ostests: Starting INODE SCENARIO 1\n\000"
 	.align 2
-LC12:
+LC10:
 	.ascii "ostests: INODE SCENARIO 1 - inode %u size is %d, should be 0!\n\000"
 	.align 2
-LC13:
+LC11:
 	.ascii "ostests: INODE SCENARIO 1 - failed to write %s to inode %u\n\000"
 	.align 2
-LC14:
+LC12:
 	.ascii "ostests: INODE SCENARIO 1 - failed to read from inode %u\n\000"
 	.align 2
-LC15:
+LC13:
 	.ascii "ostests: INODE SCENARIO 1 - did not read data correctly from inode %u\n"
 	.ascii "\000"
 	.align 2
-LC16:
+LC14:
 	.ascii "ostests: INODE SCENARIO 1 - handle %u size is %d, should be %d!\n\000"
 	.align 2
-LC17:
+LC15:
 	.ascii "ostests: INODE SCENARIO 1 succeeds: readbuff = %s, size of meep.txt = "
 	.ascii "%d\n\000"
 	.align 2
-LC18:
+LC16:
+	.ascii "\n\n\000"
+	.align 2
+LC17:
 	.ascii "ostests: Starting INODE SCENARIO 2\n\000"
 	.align 2
-LC19:
+LC18:
 	.ascii "ostests: INODE SCENARIO 2 - failed to write %s to inode %u at position"
 	.ascii " %d\n\000"
 	.align 2
-LC20:
+LC19:
 	.ascii "ostests: INODE SCENARIO 2 - failed to read from inode %u at position %"
 	.ascii "d\n\000"
 	.align 2
-LC21:
+LC20:
 	.ascii "ostests: INODE SCENARIO 2 - did not read data correctly from inode %u\n"
 	.ascii ", actual = %s\n\000"
 	.align 2
-LC22:
+LC21:
 	.ascii "ostests: INODE SCENARIO 2 - handle %u size is %d, should be %d!\n\000"
 	.align 2
-LC23:
+LC22:
 	.ascii "ostests: INODE SCENARIO 2 succeeds: readbuff = %s, size of meep.txt = "
 	.ascii "%d\n\000"
 	.align 2
-LC24:
+LC23:
 	.ascii "ostests: Starting INODE SCENARIO 3\n\000"
 	.align 2
-LC25:
+LC24:
 	.ascii "ostests: INODE SCENARIO 3 - failed to write %s to inode %u at position"
 	.ascii " %d\n\000"
 	.align 2
-LC26:
+LC25:
 	.ascii "ostests: INODE SCENARIO 3 - failed to read from inode %u at position %"
 	.ascii "d\n\000"
 	.align 2
-LC27:
+LC26:
 	.ascii "ostests: INODE SCENARIO 3 - did not read data correctly from inode %u\n"
 	.ascii ", actual = %s\n\000"
 	.align 2
-LC28:
+LC27:
 	.ascii "ostests: INODE SCENARIO 3 succeeds: readbuff = %s, size of meep.txt = "
 	.ascii "%d\n\000"
 	.align 2
-LC29:
+LC28:
 	.ascii "ostests: Starting INODE SCENARIO 4\n\000"
 	.align 2
-LC30:
+LC29:
 	.ascii "ostests: INODE SCENARIO 4 - failed to write %s to inode %u at position"
 	.ascii " %d\n\000"
 	.align 2
-LC31:
+LC30:
 	.ascii "ostests: INODE SCENARIO 4 - failed to read from inode %u at position %"
 	.ascii "d\n\000"
 	.align 2
-LC32:
+LC31:
 	.ascii "ostests: INODE SCENARIO 4 - did not read data correctly from inode %u\n"
 	.ascii ", actual = %s\n\000"
 	.align 2
-LC33:
+LC32:
 	.ascii "ostests: INODE SCENARIO 4 succeeds - readbuff = %s, size of meep.txt ="
 	.ascii " %d\n\000"
 	.align 2
-LC34:
+LC33:
 	.ascii "ostests: Starting INODE SCENARIO 5\n\000"
 	.align 2
-LC35:
+LC34:
 	.ascii "ostests: INODE SCENARIO 5 - failed to write %s to inode %u at position"
 	.ascii " %d\n\000"
 	.align 2
-LC36:
+LC35:
 	.ascii "ostests: INODE SCENARIO 5 - failed to read from inode %u at position %"
 	.ascii "d\n\000"
 	.align 2
-LC37:
+LC36:
 	.ascii "ostests: INODE SCENARIO 5 - did not read data correctly from inode %u\n"
 	.ascii ", actual = %s\n\000"
 	.align 2
-LC38:
+LC37:
 	.ascii "ostests: INODE SCENARIO 5 succeeds - readbuff = %s, size of meep.txt ="
 	.ascii " %d\n\000"
 	.align 2
-LC39:
+LC38:
 	.ascii "ostests: Starting INODE SCENARIO 6\n\000"
 	.align 2
-LC40:
+LC39:
 	.ascii "ostests: INODE SCENARIO 6 - failed to write %s to inode %u at position"
 	.ascii " %d\n\000"
 	.align 2
-LC41:
+LC40:
 	.ascii "ostests: INODE SCENARIO 6 - failed to read from inode %u at position %"
 	.ascii "d\n\000"
 	.align 2
-LC42:
+LC41:
 	.ascii "ostests: INODE SCENARIO 6 - did not read data correctly from inode %u\n"
 	.ascii ", actual = %s\n\000"
 	.align 2
-LC43:
+LC42:
 	.ascii "ostests: INODE SCENARIO 6 succeeds - readbuff = %s, size of meep.txt ="
 	.ascii " %d\n\000"
 	.align 2
-LC44:
+LC43:
 	.ascii "ostests: Starting INODE SCENARIO 7\n\000"
 	.align 2
-LC45:
+LC44:
 	.ascii "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi vestibu"
 	.ascii "lum, massa nec porta blandit, nibh turpis faucibus sapien, nec finibus"
 	.ascii " eros nibh a massa. Aliquam sagittis ligula eu ipsum dictum volutpat. "
@@ -378,32 +375,32 @@ LC45:
 	.ascii "d nibh faucibus commodo. Sed sollicitudin augue at venenatis tristique"
 	.ascii ". Integer volutpat eros vitae velit lobortis rutrum. Aenean metus.\000"
 	.align 2
-LC46:
+LC45:
 	.ascii "ostests: INODE SCENARIO 7 - failed to write %s to inode %u at position"
 	.ascii " %d\n\000"
 	.align 2
-LC47:
+LC46:
 	.ascii "ostests: INODE SCENARIO 7 - failed to read from inode %u at position %"
 	.ascii "d\n\000"
 	.align 2
-LC48:
+LC47:
 	.ascii "ostests: INODE SCENARIO 7 - did not read data correctly from inode %u\n"
 	.ascii ", actual = %s\n\000"
 	.align 2
-LC49:
+LC48:
 	.ascii "ostests: INODE SCENARIO 7 succeeds - readbuff = %s, size of meep.txt ="
 	.ascii " %d\n\000"
 	.align 2
-LC50:
+LC49:
 	.ascii "ostests: deleting inode %u (meep.txt) failed\n\000"
 	.align 2
-LC51:
+LC50:
 	.ascii "ostests: deleting inode %u (marp.txt) failed\n\000"
 	.align 2
-LC52:
+LC51:
 	.ascii "ostests: deleting inode %u succeeded\n\000"
 	.align 2
-LC53:
+LC52:
 	.ascii "ostests: deleting inode %u (meep.txt - ALREADY DELETED) succeeded\n\000"
 .text
 	.align 2
@@ -482,14 +479,6 @@ _RunOSTests:
 	addi	r29,r29,#8
 	addi	r29,r29,#-8
 	add	r1,r0,r29
-	lhi	r2,((LC4)>>16)&0xffff
-	addui	r2,r2,(LC4)&0xffff
-	sw	(r1),r2
-	jal	_printf
-	nop	; delay slot nop
-	addi	r29,r29,#8
-	addi	r29,r29,#-8
-	add	r1,r0,r29
 	lhi	r2,((LC1)>>16)&0xffff
 	addui	r2,r2,(LC1)&0xffff
 	sw	(r1),r2
@@ -503,8 +492,8 @@ _RunOSTests:
 	nop	; delay slot nop
 	addi	r29,r29,#-8
 	add	r1,r0,r29
-	lhi	r2,((LC5)>>16)&0xffff
-	addui	r2,r2,(LC5)&0xffff
+	lhi	r2,((LC4)>>16)&0xffff
+	addui	r2,r2,(LC4)&0xffff
 	sw	(r1),r2
 	jal	_printf
 	nop	; delay slot nop
@@ -528,8 +517,8 @@ L13:
 	nop	; delay slot nop
 	addi	r29,r29,#-8
 	add	r1,r0,r29
-	lhi	r2,((LC6)>>16)&0xffff
-	addui	r2,r2,(LC6)&0xffff
+	lhi	r2,((LC5)>>16)&0xffff
+	addui	r2,r2,(LC5)&0xffff
 	sw	(r1),r2
 	jal	_printf
 	nop	; delay slot nop
@@ -540,8 +529,8 @@ L13:
 L14:
 	addi	r29,r29,#-8
 	add	r1,r0,r29
-	lhi	r2,((LC7)>>16)&0xffff
-	addui	r2,r2,(LC7)&0xffff
+	lhi	r2,((LC6)>>16)&0xffff
+	addui	r2,r2,(LC6)&0xffff
 	sw	(r1),r2
 	jal	_DfsInodeOpen
 	nop	; delay slot nop
@@ -553,8 +542,8 @@ L14:
 	nop	; delay slot nop
 	addi	r29,r29,#-8
 	add	r1,r0,r29
-	lhi	r2,((LC8)>>16)&0xffff
-	addui	r2,r2,(LC8)&0xffff
+	lhi	r2,((LC7)>>16)&0xffff
+	addui	r2,r2,(LC7)&0xffff
 	sw	(r1),r2
 	jal	_printf
 	nop	; delay slot nop
@@ -578,8 +567,8 @@ L15:
 	nop	; delay slot nop
 	addi	r29,r29,#-8
 	add	r1,r0,r29
-	lhi	r2,((LC9)>>16)&0xffff
-	addui	r2,r2,(LC9)&0xffff
+	lhi	r2,((LC8)>>16)&0xffff
+	addui	r2,r2,(LC8)&0xffff
 	sw	(r1),r2
 	jal	_printf
 	nop	; delay slot nop
@@ -590,16 +579,8 @@ L15:
 L16:
 	addi	r29,r29,#-8
 	add	r1,r0,r29
-	lhi	r2,((LC10)>>16)&0xffff
-	addui	r2,r2,(LC10)&0xffff
-	sw	(r1),r2
-	jal	_printf
-	nop	; delay slot nop
-	addi	r29,r29,#8
-	addi	r29,r29,#-8
-	add	r1,r0,r29
-	lhi	r2,((LC11)>>16)&0xffff
-	addui	r2,r2,(LC11)&0xffff
+	lhi	r2,((LC9)>>16)&0xffff
+	addui	r2,r2,(LC9)&0xffff
 	sw	(r1),r2
 	jal	_printf
 	nop	; delay slot nop
@@ -623,8 +604,8 @@ L16:
 	addi	r29,r29,#8
 	addi	r29,r29,#-16
 	add	r2,r0,r29
-	lhi	r3,((LC12)>>16)&0xffff
-	addui	r3,r3,(LC12)&0xffff
+	lhi	r3,((LC10)>>16)&0xffff
+	addui	r3,r3,(LC10)&0xffff
 	sw	(r2),r3
 	lw	r3,-12(r30)
 	sw	4(r2),r3
@@ -668,8 +649,8 @@ L17:
 	nop	; delay slot nop
 	addi	r29,r29,#-16
 	add	r1,r0,r29
-	lhi	r2,((LC13)>>16)&0xffff
-	addui	r2,r2,(LC13)&0xffff
+	lhi	r2,((LC11)>>16)&0xffff
+	addui	r2,r2,(LC11)&0xffff
 	sw	(r1),r2
 	addi	r2,r30,#-2072
 	sw	4(r1),r2
@@ -714,8 +695,8 @@ L18:
 	nop	; delay slot nop
 	addi	r29,r29,#-8
 	add	r1,r0,r29
-	lhi	r2,((LC14)>>16)&0xffff
-	addui	r2,r2,(LC14)&0xffff
+	lhi	r2,((LC12)>>16)&0xffff
+	addui	r2,r2,(LC12)&0xffff
 	sw	(r1),r2
 	lw	r2,-12(r30)
 	sw	4(r1),r2
@@ -748,8 +729,8 @@ L19:
 	nop	; delay slot nop
 	addi	r29,r29,#-8
 	add	r1,r0,r29
-	lhi	r2,((LC15)>>16)&0xffff
-	addui	r2,r2,(LC15)&0xffff
+	lhi	r2,((LC13)>>16)&0xffff
+	addui	r2,r2,(LC13)&0xffff
 	sw	(r1),r2
 	lw	r2,-12(r30)
 	sw	4(r1),r2
@@ -795,8 +776,8 @@ L20:
 	addi	r29,r29,#8
 	addi	r29,r29,#-16
 	add	r3,r0,r29
-	lhi	r4,((LC16)>>16)&0xffff
-	addui	r4,r4,(LC16)&0xffff
+	lhi	r4,((LC14)>>16)&0xffff
+	addui	r4,r4,(LC14)&0xffff
 	sw	(r3),r4
 	lw	r4,-12(r30)
 	sw	4(r3),r4
@@ -818,8 +799,8 @@ L21:
 	addi	r29,r29,#8
 	addi	r29,r29,#-16
 	add	r2,r0,r29
-	lhi	r3,((LC17)>>16)&0xffff
-	addui	r3,r3,(LC17)&0xffff
+	lhi	r3,((LC15)>>16)&0xffff
+	addui	r3,r3,(LC15)&0xffff
 	sw	(r2),r3
 	addi	r3,r30,#-4120
 	sw	4(r2),r3
@@ -829,8 +810,8 @@ L21:
 	addi	r29,r29,#16
 	addi	r29,r29,#-8
 	add	r1,r0,r29
-	lhi	r2,((LC10)>>16)&0xffff
-	addui	r2,r2,(LC10)&0xffff
+	lhi	r2,((LC16)>>16)&0xffff
+	addui	r2,r2,(LC16)&0xffff
 	sw	(r1),r2
 	jal	_printf
 	nop	; delay slot nop
@@ -846,8 +827,8 @@ L21:
 	addi	r29,r29,#8
 	addi	r29,r29,#-8
 	add	r1,r0,r29
-	lhi	r2,((LC18)>>16)&0xffff
-	addui	r2,r2,(LC18)&0xffff
+	lhi	r2,((LC17)>>16)&0xffff
+	addui	r2,r2,(LC17)&0xffff
 	sw	(r1),r2
 	jal	_printf
 	nop	; delay slot nop
@@ -884,8 +865,8 @@ L21:
 	nop	; delay slot nop
 	addi	r29,r29,#-16
 	add	r1,r0,r29
-	lhi	r2,((LC19)>>16)&0xffff
-	addui	r2,r2,(LC19)&0xffff
+	lhi	r2,((LC18)>>16)&0xffff
+	addui	r2,r2,(LC18)&0xffff
 	sw	(r1),r2
 	addi	r2,r30,#-2072
 	sw	4(r1),r2
@@ -932,8 +913,8 @@ L22:
 	nop	; delay slot nop
 	addi	r29,r29,#-16
 	add	r1,r0,r29
-	lhi	r2,((LC20)>>16)&0xffff
-	addui	r2,r2,(LC20)&0xffff
+	lhi	r2,((LC19)>>16)&0xffff
+	addui	r2,r2,(LC19)&0xffff
 	sw	(r1),r2
 	lw	r2,-12(r30)
 	sw	4(r1),r2
@@ -968,8 +949,8 @@ L23:
 	nop	; delay slot nop
 	addi	r29,r29,#-16
 	add	r1,r0,r29
-	lhi	r2,((LC21)>>16)&0xffff
-	addui	r2,r2,(LC21)&0xffff
+	lhi	r2,((LC20)>>16)&0xffff
+	addui	r2,r2,(LC20)&0xffff
 	sw	(r1),r2
 	lw	r2,-12(r30)
 	sw	4(r1),r2
@@ -1023,8 +1004,8 @@ L24:
 	nop	; delay slot nop
 	addi	r29,r29,#-16
 	add	r1,r0,r29
-	lhi	r2,((LC20)>>16)&0xffff
-	addui	r2,r2,(LC20)&0xffff
+	lhi	r2,((LC19)>>16)&0xffff
+	addui	r2,r2,(LC19)&0xffff
 	sw	(r1),r2
 	lw	r2,-12(r30)
 	sw	4(r1),r2
@@ -1059,8 +1040,8 @@ L25:
 	nop	; delay slot nop
 	addi	r29,r29,#-16
 	add	r1,r0,r29
-	lhi	r2,((LC21)>>16)&0xffff
-	addui	r2,r2,(LC21)&0xffff
+	lhi	r2,((LC20)>>16)&0xffff
+	addui	r2,r2,(LC20)&0xffff
 	sw	(r1),r2
 	lw	r2,-12(r30)
 	sw	4(r1),r2
@@ -1111,8 +1092,8 @@ L26:
 	addi	r1,r3,#2048
 	addi	r29,r29,#-16
 	add	r3,r0,r29
-	lhi	r4,((LC22)>>16)&0xffff
-	addui	r4,r4,(LC22)&0xffff
+	lhi	r4,((LC21)>>16)&0xffff
+	addui	r4,r4,(LC21)&0xffff
 	sw	(r3),r4
 	lw	r4,-12(r30)
 	sw	4(r3),r4
@@ -1157,8 +1138,8 @@ L27:
 	nop	; delay slot nop
 	addi	r29,r29,#-16
 	add	r1,r0,r29
-	lhi	r2,((LC19)>>16)&0xffff
-	addui	r2,r2,(LC19)&0xffff
+	lhi	r2,((LC18)>>16)&0xffff
+	addui	r2,r2,(LC18)&0xffff
 	sw	(r1),r2
 	addi	r2,r30,#-2072
 	sw	4(r1),r2
@@ -1211,8 +1192,8 @@ L28:
 	addi	r1,r3,#2048
 	addi	r29,r29,#-16
 	add	r3,r0,r29
-	lhi	r4,((LC22)>>16)&0xffff
-	addui	r4,r4,(LC22)&0xffff
+	lhi	r4,((LC21)>>16)&0xffff
+	addui	r4,r4,(LC21)&0xffff
 	sw	(r3),r4
 	lw	r4,-12(r30)
 	sw	4(r3),r4
@@ -1234,8 +1215,8 @@ L29:
 	addi	r29,r29,#8
 	addi	r29,r29,#-16
 	add	r2,r0,r29
-	lhi	r3,((LC23)>>16)&0xffff
-	addui	r3,r3,(LC23)&0xffff
+	lhi	r3,((LC22)>>16)&0xffff
+	addui	r3,r3,(LC22)&0xffff
 	sw	(r2),r3
 	addi	r3,r30,#-4120
 	sw	4(r2),r3
@@ -1245,8 +1226,8 @@ L29:
 	addi	r29,r29,#16
 	addi	r29,r29,#-8
 	add	r1,r0,r29
-	lhi	r2,((LC10)>>16)&0xffff
-	addui	r2,r2,(LC10)&0xffff
+	lhi	r2,((LC16)>>16)&0xffff
+	addui	r2,r2,(LC16)&0xffff
 	sw	(r1),r2
 	jal	_printf
 	nop	; delay slot nop
@@ -1262,8 +1243,8 @@ L29:
 	addi	r29,r29,#8
 	addi	r29,r29,#-8
 	add	r1,r0,r29
-	lhi	r2,((LC24)>>16)&0xffff
-	addui	r2,r2,(LC24)&0xffff
+	lhi	r2,((LC23)>>16)&0xffff
+	addui	r2,r2,(LC23)&0xffff
 	sw	(r1),r2
 	jal	_printf
 	nop	; delay slot nop
@@ -1300,8 +1281,8 @@ L29:
 	nop	; delay slot nop
 	addi	r29,r29,#-16
 	add	r1,r0,r29
-	lhi	r2,((LC25)>>16)&0xffff
-	addui	r2,r2,(LC25)&0xffff
+	lhi	r2,((LC24)>>16)&0xffff
+	addui	r2,r2,(LC24)&0xffff
 	sw	(r1),r2
 	addi	r2,r30,#-2072
 	sw	4(r1),r2
@@ -1348,8 +1329,8 @@ L30:
 	nop	; delay slot nop
 	addi	r29,r29,#-16
 	add	r1,r0,r29
-	lhi	r2,((LC26)>>16)&0xffff
-	addui	r2,r2,(LC26)&0xffff
+	lhi	r2,((LC25)>>16)&0xffff
+	addui	r2,r2,(LC25)&0xffff
 	sw	(r1),r2
 	lw	r2,-12(r30)
 	sw	4(r1),r2
@@ -1384,8 +1365,8 @@ L31:
 	nop	; delay slot nop
 	addi	r29,r29,#-16
 	add	r1,r0,r29
-	lhi	r2,((LC27)>>16)&0xffff
-	addui	r2,r2,(LC27)&0xffff
+	lhi	r2,((LC26)>>16)&0xffff
+	addui	r2,r2,(LC26)&0xffff
 	sw	(r1),r2
 	lw	r2,-12(r30)
 	sw	4(r1),r2
@@ -1439,8 +1420,8 @@ L32:
 	nop	; delay slot nop
 	addi	r29,r29,#-16
 	add	r1,r0,r29
-	lhi	r2,((LC25)>>16)&0xffff
-	addui	r2,r2,(LC25)&0xffff
+	lhi	r2,((LC24)>>16)&0xffff
+	addui	r2,r2,(LC24)&0xffff
 	sw	(r1),r2
 	addi	r2,r30,#-2072
 	sw	4(r1),r2
@@ -1487,8 +1468,8 @@ L33:
 	nop	; delay slot nop
 	addi	r29,r29,#-16
 	add	r1,r0,r29
-	lhi	r2,((LC26)>>16)&0xffff
-	addui	r2,r2,(LC26)&0xffff
+	lhi	r2,((LC25)>>16)&0xffff
+	addui	r2,r2,(LC25)&0xffff
 	sw	(r1),r2
 	lw	r2,-12(r30)
 	sw	4(r1),r2
@@ -1523,8 +1504,8 @@ L34:
 	nop	; delay slot nop
 	addi	r29,r29,#-16
 	add	r1,r0,r29
-	lhi	r2,((LC27)>>16)&0xffff
-	addui	r2,r2,(LC27)&0xffff
+	lhi	r2,((LC26)>>16)&0xffff
+	addui	r2,r2,(LC26)&0xffff
 	sw	(r1),r2
 	lw	r2,-12(r30)
 	sw	4(r1),r2
@@ -1546,8 +1527,8 @@ L35:
 	addi	r29,r29,#8
 	addi	r29,r29,#-16
 	add	r2,r0,r29
-	lhi	r3,((LC28)>>16)&0xffff
-	addui	r3,r3,(LC28)&0xffff
+	lhi	r3,((LC27)>>16)&0xffff
+	addui	r3,r3,(LC27)&0xffff
 	sw	(r2),r3
 	addi	r3,r30,#-4120
 	sw	4(r2),r3
@@ -1557,8 +1538,8 @@ L35:
 	addi	r29,r29,#16
 	addi	r29,r29,#-8
 	add	r1,r0,r29
-	lhi	r2,((LC10)>>16)&0xffff
-	addui	r2,r2,(LC10)&0xffff
+	lhi	r2,((LC16)>>16)&0xffff
+	addui	r2,r2,(LC16)&0xffff
 	sw	(r1),r2
 	jal	_printf
 	nop	; delay slot nop
@@ -1574,8 +1555,8 @@ L35:
 	addi	r29,r29,#8
 	addi	r29,r29,#-8
 	add	r1,r0,r29
-	lhi	r2,((LC29)>>16)&0xffff
-	addui	r2,r2,(LC29)&0xffff
+	lhi	r2,((LC28)>>16)&0xffff
+	addui	r2,r2,(LC28)&0xffff
 	sw	(r1),r2
 	jal	_printf
 	nop	; delay slot nop
@@ -1612,8 +1593,8 @@ L35:
 	nop	; delay slot nop
 	addi	r29,r29,#-16
 	add	r1,r0,r29
-	lhi	r2,((LC30)>>16)&0xffff
-	addui	r2,r2,(LC30)&0xffff
+	lhi	r2,((LC29)>>16)&0xffff
+	addui	r2,r2,(LC29)&0xffff
 	sw	(r1),r2
 	addi	r2,r30,#-2072
 	sw	4(r1),r2
@@ -1660,8 +1641,8 @@ L36:
 	nop	; delay slot nop
 	addi	r29,r29,#-16
 	add	r1,r0,r29
-	lhi	r2,((LC31)>>16)&0xffff
-	addui	r2,r2,(LC31)&0xffff
+	lhi	r2,((LC30)>>16)&0xffff
+	addui	r2,r2,(LC30)&0xffff
 	sw	(r1),r2
 	lw	r2,-12(r30)
 	sw	4(r1),r2
@@ -1696,8 +1677,8 @@ L37:
 	nop	; delay slot nop
 	addi	r29,r29,#-16
 	add	r1,r0,r29
-	lhi	r2,((LC32)>>16)&0xffff
-	addui	r2,r2,(LC32)&0xffff
+	lhi	r2,((LC31)>>16)&0xffff
+	addui	r2,r2,(LC31)&0xffff
 	sw	(r1),r2
 	lw	r2,-12(r30)
 	sw	4(r1),r2
@@ -1719,8 +1700,8 @@ L38:
 	addi	r29,r29,#8
 	addi	r29,r29,#-16
 	add	r2,r0,r29
-	lhi	r3,((LC33)>>16)&0xffff
-	addui	r3,r3,(LC33)&0xffff
+	lhi	r3,((LC32)>>16)&0xffff
+	addui	r3,r3,(LC32)&0xffff
 	sw	(r2),r3
 	addi	r3,r30,#-4120
 	sw	4(r2),r3
@@ -1730,8 +1711,8 @@ L38:
 	addi	r29,r29,#16
 	addi	r29,r29,#-8
 	add	r1,r0,r29
-	lhi	r2,((LC10)>>16)&0xffff
-	addui	r2,r2,(LC10)&0xffff
+	lhi	r2,((LC16)>>16)&0xffff
+	addui	r2,r2,(LC16)&0xffff
 	sw	(r1),r2
 	jal	_printf
 	nop	; delay slot nop
@@ -1747,8 +1728,8 @@ L38:
 	addi	r29,r29,#8
 	addi	r29,r29,#-8
 	add	r1,r0,r29
-	lhi	r2,((LC34)>>16)&0xffff
-	addui	r2,r2,(LC34)&0xffff
+	lhi	r2,((LC33)>>16)&0xffff
+	addui	r2,r2,(LC33)&0xffff
 	sw	(r1),r2
 	jal	_printf
 	nop	; delay slot nop
@@ -1785,8 +1766,8 @@ L38:
 	nop	; delay slot nop
 	addi	r29,r29,#-16
 	add	r1,r0,r29
-	lhi	r2,((LC35)>>16)&0xffff
-	addui	r2,r2,(LC35)&0xffff
+	lhi	r2,((LC34)>>16)&0xffff
+	addui	r2,r2,(LC34)&0xffff
 	sw	(r1),r2
 	addi	r2,r30,#-2072
 	sw	4(r1),r2
@@ -1833,8 +1814,8 @@ L39:
 	nop	; delay slot nop
 	addi	r29,r29,#-16
 	add	r1,r0,r29
-	lhi	r2,((LC36)>>16)&0xffff
-	addui	r2,r2,(LC36)&0xffff
+	lhi	r2,((LC35)>>16)&0xffff
+	addui	r2,r2,(LC35)&0xffff
 	sw	(r1),r2
 	lw	r2,-12(r30)
 	sw	4(r1),r2
@@ -1869,8 +1850,8 @@ L40:
 	nop	; delay slot nop
 	addi	r29,r29,#-16
 	add	r1,r0,r29
-	lhi	r2,((LC37)>>16)&0xffff
-	addui	r2,r2,(LC37)&0xffff
+	lhi	r2,((LC36)>>16)&0xffff
+	addui	r2,r2,(LC36)&0xffff
 	sw	(r1),r2
 	lw	r2,-12(r30)
 	sw	4(r1),r2
@@ -1892,8 +1873,8 @@ L41:
 	addi	r29,r29,#8
 	addi	r29,r29,#-16
 	add	r2,r0,r29
-	lhi	r3,((LC38)>>16)&0xffff
-	addui	r3,r3,(LC38)&0xffff
+	lhi	r3,((LC37)>>16)&0xffff
+	addui	r3,r3,(LC37)&0xffff
 	sw	(r2),r3
 	addi	r3,r30,#-4120
 	sw	4(r2),r3
@@ -1903,8 +1884,8 @@ L41:
 	addi	r29,r29,#16
 	addi	r29,r29,#-8
 	add	r1,r0,r29
-	lhi	r2,((LC10)>>16)&0xffff
-	addui	r2,r2,(LC10)&0xffff
+	lhi	r2,((LC16)>>16)&0xffff
+	addui	r2,r2,(LC16)&0xffff
 	sw	(r1),r2
 	jal	_printf
 	nop	; delay slot nop
@@ -1920,8 +1901,8 @@ L41:
 	addi	r29,r29,#8
 	addi	r29,r29,#-8
 	add	r1,r0,r29
-	lhi	r2,((LC39)>>16)&0xffff
-	addui	r2,r2,(LC39)&0xffff
+	lhi	r2,((LC38)>>16)&0xffff
+	addui	r2,r2,(LC38)&0xffff
 	sw	(r1),r2
 	jal	_printf
 	nop	; delay slot nop
@@ -1958,8 +1939,8 @@ L41:
 	nop	; delay slot nop
 	addi	r29,r29,#-16
 	add	r1,r0,r29
-	lhi	r2,((LC40)>>16)&0xffff
-	addui	r2,r2,(LC40)&0xffff
+	lhi	r2,((LC39)>>16)&0xffff
+	addui	r2,r2,(LC39)&0xffff
 	sw	(r1),r2
 	addi	r2,r30,#-2072
 	sw	4(r1),r2
@@ -2006,8 +1987,8 @@ L42:
 	nop	; delay slot nop
 	addi	r29,r29,#-16
 	add	r1,r0,r29
-	lhi	r2,((LC41)>>16)&0xffff
-	addui	r2,r2,(LC41)&0xffff
+	lhi	r2,((LC40)>>16)&0xffff
+	addui	r2,r2,(LC40)&0xffff
 	sw	(r1),r2
 	lw	r2,-12(r30)
 	sw	4(r1),r2
@@ -2042,8 +2023,8 @@ L43:
 	nop	; delay slot nop
 	addi	r29,r29,#-16
 	add	r1,r0,r29
-	lhi	r2,((LC42)>>16)&0xffff
-	addui	r2,r2,(LC42)&0xffff
+	lhi	r2,((LC41)>>16)&0xffff
+	addui	r2,r2,(LC41)&0xffff
 	sw	(r1),r2
 	lw	r2,-12(r30)
 	sw	4(r1),r2
@@ -2065,8 +2046,8 @@ L44:
 	addi	r29,r29,#8
 	addi	r29,r29,#-16
 	add	r2,r0,r29
-	lhi	r3,((LC43)>>16)&0xffff
-	addui	r3,r3,(LC43)&0xffff
+	lhi	r3,((LC42)>>16)&0xffff
+	addui	r3,r3,(LC42)&0xffff
 	sw	(r2),r3
 	addi	r3,r30,#-4120
 	sw	4(r2),r3
@@ -2076,8 +2057,8 @@ L44:
 	addi	r29,r29,#16
 	addi	r29,r29,#-8
 	add	r1,r0,r29
-	lhi	r2,((LC10)>>16)&0xffff
-	addui	r2,r2,(LC10)&0xffff
+	lhi	r2,((LC16)>>16)&0xffff
+	addui	r2,r2,(LC16)&0xffff
 	sw	(r1),r2
 	jal	_printf
 	nop	; delay slot nop
@@ -2093,8 +2074,8 @@ L44:
 	addi	r29,r29,#8
 	addi	r29,r29,#-8
 	add	r1,r0,r29
-	lhi	r2,((LC44)>>16)&0xffff
-	addui	r2,r2,(LC44)&0xffff
+	lhi	r2,((LC43)>>16)&0xffff
+	addui	r2,r2,(LC43)&0xffff
 	sw	(r1),r2
 	jal	_printf
 	nop	; delay slot nop
@@ -2103,8 +2084,8 @@ L44:
 	add	r1,r0,r29
 	addi	r2,r30,#-2072
 	sw	(r1),r2
-	lhi	r2,((LC45)>>16)&0xffff
-	addui	r2,r2,(LC45)&0xffff
+	lhi	r2,((LC44)>>16)&0xffff
+	addui	r2,r2,(LC44)&0xffff
 	sw	4(r1),r2
 	addi	r2,r0,#1536
 	sw	8(r1),r2
@@ -2143,8 +2124,8 @@ L44:
 	nop	; delay slot nop
 	addi	r29,r29,#-16
 	add	r1,r0,r29
-	lhi	r2,((LC46)>>16)&0xffff
-	addui	r2,r2,(LC46)&0xffff
+	lhi	r2,((LC45)>>16)&0xffff
+	addui	r2,r2,(LC45)&0xffff
 	sw	(r1),r2
 	addi	r2,r30,#-2072
 	sw	4(r1),r2
@@ -2191,8 +2172,8 @@ L45:
 	nop	; delay slot nop
 	addi	r29,r29,#-16
 	add	r1,r0,r29
-	lhi	r2,((LC47)>>16)&0xffff
-	addui	r2,r2,(LC47)&0xffff
+	lhi	r2,((LC46)>>16)&0xffff
+	addui	r2,r2,(LC46)&0xffff
 	sw	(r1),r2
 	lw	r2,-12(r30)
 	sw	4(r1),r2
@@ -2227,8 +2208,8 @@ L46:
 	nop	; delay slot nop
 	addi	r29,r29,#-16
 	add	r1,r0,r29
-	lhi	r2,((LC48)>>16)&0xffff
-	addui	r2,r2,(LC48)&0xffff
+	lhi	r2,((LC47)>>16)&0xffff
+	addui	r2,r2,(LC47)&0xffff
 	sw	(r1),r2
 	lw	r2,-12(r30)
 	sw	4(r1),r2
@@ -2250,8 +2231,8 @@ L47:
 	addi	r29,r29,#8
 	addi	r29,r29,#-16
 	add	r2,r0,r29
-	lhi	r3,((LC49)>>16)&0xffff
-	addui	r3,r3,(LC49)&0xffff
+	lhi	r3,((LC48)>>16)&0xffff
+	addui	r3,r3,(LC48)&0xffff
 	sw	(r2),r3
 	addi	r3,r30,#-4120
 	sw	4(r2),r3
@@ -2261,8 +2242,8 @@ L47:
 	addi	r29,r29,#16
 	addi	r29,r29,#-8
 	add	r1,r0,r29
-	lhi	r2,((LC10)>>16)&0xffff
-	addui	r2,r2,(LC10)&0xffff
+	lhi	r2,((LC16)>>16)&0xffff
+	addui	r2,r2,(LC16)&0xffff
 	sw	(r1),r2
 	jal	_printf
 	nop	; delay slot nop
@@ -2279,8 +2260,8 @@ L47:
 	nop	; delay slot nop
 	addi	r29,r29,#-8
 	add	r1,r0,r29
-	lhi	r2,((LC50)>>16)&0xffff
-	addui	r2,r2,(LC50)&0xffff
+	lhi	r2,((LC49)>>16)&0xffff
+	addui	r2,r2,(LC49)&0xffff
 	sw	(r1),r2
 	lw	r2,-12(r30)
 	sw	4(r1),r2
@@ -2303,8 +2284,8 @@ L48:
 	nop	; delay slot nop
 	addi	r29,r29,#-8
 	add	r1,r0,r29
-	lhi	r2,((LC51)>>16)&0xffff
-	addui	r2,r2,(LC51)&0xffff
+	lhi	r2,((LC50)>>16)&0xffff
+	addui	r2,r2,(LC50)&0xffff
 	sw	(r1),r2
 	lw	r2,-16(r30)
 	sw	4(r1),r2
@@ -2327,8 +2308,8 @@ L49:
 	nop	; delay slot nop
 	addi	r29,r29,#-8
 	add	r1,r0,r29
-	lhi	r2,((LC52)>>16)&0xffff
-	addui	r2,r2,(LC52)&0xffff
+	lhi	r2,((LC51)>>16)&0xffff
+	addui	r2,r2,(LC51)&0xffff
 	sw	(r1),r2
 	lw	r2,-20(r30)
 	sw	4(r1),r2
@@ -2351,8 +2332,8 @@ L50:
 	nop	; delay slot nop
 	addi	r29,r29,#-8
 	add	r1,r0,r29
-	lhi	r2,((LC53)>>16)&0xffff
-	addui	r2,r2,(LC53)&0xffff
+	lhi	r2,((LC52)>>16)&0xffff
+	addui	r2,r2,(LC52)&0xffff
 	sw	(r1),r2
 	lw	r2,-12(r30)
 	sw	4(r1),r2

@@ -342,21 +342,36 @@ int DfsFreeBlock(uint32 blocknum)
 		printf("Error: FBV Lock Unavailable\n");
 		return DFS_FAIL;
 	}
-	
+
+	//Get Index and Bit Position of Block Number	
 	fbv_index = blocknum/32; 
 	index_bit_position = blocknum % 32;
 
-	mask = 0x1 << index_bit_position;
-	
-	fbv[fbv_index] = fbv[fbv_index] ^ mask; //Set bit	
-	
-	if(LockHandleRelease(fbv_lock) != SYNC_SUCCESS)
+	mask = 0x1 << (31 - index_bit_position);
+		
+	//See if Bit is Set Already, if it is, return an error
+	if(fbv[fbv_index] & mask)
 	{
-		printf("Error FBV Lock Release Failed\n");
+		fbv[fbv_index] = fbv[fbv_index] ^ mask; //UnSet bit	
+
+		if(LockHandleRelease(fbv_lock) != SYNC_SUCCESS)
+		{
+			printf("Error FBV Lock Release Failed\n");
+			return DFS_FAIL;
+		}
+		
+		return DFS_SUCCESS;
+	}
+	else
+	{
+		printf("Error: Block has already been freed!\n");
+		if(LockHandleRelease(fbv_lock) != SYNC_SUCCESS)
+		{
+			printf("Error FBV Lock Release Failed\n");
+			return DFS_FAIL;
+		}
 		return DFS_FAIL;
 	}
-
-	return DFS_SUCCESS;
 }
 
 
@@ -538,12 +553,17 @@ int DfsInodeReadBytes(uint32 handle, void *mem, int start_byte, int num_bytes) {
 
 int DfsInodeWriteBytes(uint32 handle, void *mem, int start_byte, int num_bytes) 
 {
+	uint32 block;
 	if(DfsCheckSystem() == DFS_FAIL)
 	{
 		return DFS_FAIL;
 	}
-
-	DfsAllocateBlock();
+	block = DfsAllocateBlock();
+	printf("Block is %d\n", block);
+	
+	DfsFreeBlock(block);
+	printf("Freeing Block Again \n");
+	DfsFreeBlock(block); 
 	return DFS_FAIL;
 }
 
