@@ -21,7 +21,7 @@ void main (int argc, char *argv[])
 	int i,j; //Loop Control Variable 
 	dfs_block block; 
 	uint32 ptr; 
-
+	uint32 byte_ratio;
 	Printf("\n\n======FDISK START======\n\n");	
 	
 //Initializations and argc check
@@ -58,7 +58,7 @@ void main (int argc, char *argv[])
 	disksize = disk_size();
 	diskblocksize = disk_blocksize();
 	num_filesystem_blocks = DFS_NUM_BLOCKS;
-
+	
 	
 	//Print out the Sizes 
 	//Initialize the Super Block
@@ -68,7 +68,9 @@ void main (int argc, char *argv[])
 	sb.size_inodes_array = FDISK_NUM_INODES;
 	sb.start_block_num_fbv = FDISK_FBV_BLOCK_START;
 	sb.data_block_start = FDISK_DATA_BLOCK_START;	
-  
+	
+	byte_ratio = sb.block_size / diskblocksize;  
+
 // Make sure the disk exists before doing anything else
 	if(disk_create() == DISK_FAIL)
 	{
@@ -102,14 +104,12 @@ void main (int argc, char *argv[])
 	//Write FBV into Disk Blocks 38 - 41 (DFS Blocks 19-20)
 	for(i = sb.start_block_num_fbv; i < sb.data_block_start; i++)
 	{
-		bcopy(ptr, block.data, diskblocksize);
-		FdiskWriteBlock(2*i, &block);
-		ptr = ptr + diskblocksize; //Move Index Address by 512 Bytes 
-
-		bcopy(ptr, block.data, diskblocksize);	
-		FdiskWriteBlock(2*i + 1, &block);
-		ptr = ptr + diskblocksize; //Move Index Addres by 512 Bytes
-		
+		for(j = 0; j < byte_ratio; j++)
+		{
+			bcopy(ptr, block.data, diskblocksize);
+			FdiskWriteBlock(2*i + j, &block);
+			ptr = ptr + diskblocksize; //Move Index Address by 512 Bytes 
+		}
 	}
 
   // Finally, setup superblock as valid filesystem and write superblock and boot record to disk: 
@@ -127,13 +127,12 @@ void main (int argc, char *argv[])
 	//Loop through and write in inodes 
 	for(i = 0; i < (sizeof(inodes[0]) * sb.size_inodes_array)/sb.block_size; i++)
 	{
-		bcopy(ptr , block.data, diskblocksize);
-		FdiskWriteBlock(2 * (sb.start_block_num_inodes_array  + i), &block);
-		ptr += diskblocksize;
-
-		bcopy(ptr, block.data, diskblocksize);
-		FdiskWriteBlock(2 * (sb.start_block_num_inodes_array  + i) + 1, &block);
-		ptr += diskblocksize;	
+		for(j = 0; j < byte_ratio; j++)
+		{
+			bcopy(ptr , block.data, diskblocksize);
+			FdiskWriteBlock(2 * (sb.start_block_num_inodes_array  + i) + j, &block);
+			ptr += diskblocksize;
+		}
 	}
 	
 	Printf("fdisk (%d): Formatted DFS disk for %d bytes.\n", getpid(), disksize);
