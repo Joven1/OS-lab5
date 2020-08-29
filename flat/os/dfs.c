@@ -229,6 +229,34 @@ int DfsCloseFileSystem()
 
 }
 
+bool isKthBitSet(uint32 n, uint32 k)
+{
+	if((n >> (k - 1)) & 1)
+	{
+		return true;
+	}
+	else
+	{
+		return false;
+	}
+}
+
+uint32 find_Open_Block(uint32 n)
+{
+	uint32 i;
+	for(i = 32; i > 0; i--)
+	{
+		if(n & (1 << (i-1)))
+		{
+			printf("Set\n");
+		}
+		else
+		{
+			printf("Not Set\n");
+		}
+	}
+	return 0;
+} 
 
 //-----------------------------------------------------------------
 // DfsAllocateBlock allocates a DFS block for use. Remember to use 
@@ -242,6 +270,7 @@ uint32 DfsAllocateBlock()
 	uint32 mask;
 	uint32 return_value;
 	uint32 check_val_and;
+	uint32 block_position;
 
 	printf("Allocating Block \n");
 	// Check that file system has been validly loaded into memory
@@ -258,7 +287,7 @@ uint32 DfsAllocateBlock()
 	}
 
 	//in the FBV 0 = not in use, 1 = in use		
-	
+/*	
 	for(i = 0; i < DFS_FBV_MAX_NUM_WORDS; i++) //Loop through the free map
 	{
 		mask = 0x1;
@@ -288,7 +317,16 @@ uint32 DfsAllocateBlock()
 			}
 		}		
 	}
+*/
 
+	for(i = 0; i < DFS_FBV_MAX_NUM_WORDS; i++)
+	{
+		if(fbv[i] != negativeone)
+		{
+			block_position = find_Open_Block(fbv[i]);
+		}
+		break;
+	}
 	// Return handle to block
 
 	if(LockHandleRelease(fbv_lock) != SYNC_SUCCESS)
