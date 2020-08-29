@@ -1,7 +1,7 @@
 ; Linked by DLX-LD.
 ; MemSize 45056
 ; Data size: 20832
-; Text size: 5520
+; Text size: 5508
 ; Stack size: 8192
 .text 0x1000
 .data 0x3000
@@ -264,9 +264,6 @@ L29_LF0:
 	addui	r1,r1,(_fbv)&0xffff
 	addi	r9,r0,#-2048
 	sw	(r1),r9
-	lhi	r9,#-4370
-	addui	r9,r9,#61166
-	sw	2044(r1),r9
 	add	r3,r0,r1
 	lhi	r1,((_sb+20)>>16)&0xffff
 	addui	r1,r1,(_sb+20)&0xffff

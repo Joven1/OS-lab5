@@ -1029,6 +1029,134 @@ L39:
 	jr	r31
 	nop
 .endproc _DfsCloseFileSystem
+	.align 2
+.proc _isKthBitSet
+.global _isKthBitSet
+_isKthBitSet:
+;  Function 'isKthBitSet'; 0 bytes of locals, 1 regs to save.
+	sw	-4(r29),r30	; push fp
+	add	r30,r0,r29	; fp = sp
+	sw	-8(r29),r31	; push ret addr
+	subui	r29,r29,#16	; alloc local storage
+	sw	0(r29),r2
+	lw	r2,4(r30)
+	addi	r1,r2,#-1
+	lw	r2,(r30)
+	srl	r1,r2,r1
+	andi	r2,r1,#1
+	snei	r1,r2,#0
+	beqz	r1,L41
+	nop	; delay slot nop
+	addi	r1,r0,#1
+	j	L40
+	nop	; delay slot nop
+	j	L42
+	nop	; delay slot nop
+L41:
+	addi	r1,r0,#0
+	j	L40
+	nop	; delay slot nop
+L42:
+L40:
+	lw	r2,0(r29)
+	lw	r31,-8(r30)
+	add	r29,r0,r30
+	lw	r30,-4(r30)
+	jr	r31
+	nop
+.endproc _isKthBitSet
+	.align 2
+.proc _find_Open_Bit
+.global _find_Open_Bit
+_find_Open_Bit:
+;  Function 'find_Open_Bit'; 8 bytes of locals, 2 regs to save.
+	sw	-4(r29),r30	; push fp
+	add	r30,r0,r29	; fp = sp
+	sw	-8(r29),r31	; push ret addr
+	subui	r29,r29,#24	; alloc local storage
+	sw	0(r29),r2
+	sw	4(r29),r3
+	nop
+	addi	r1,r0,#32
+	sw	-12(r30),r1
+L44:
+	lw	r1,-12(r30)
+	addi	r2,r1,#-1
+	sw	-12(r30),r2
+	snei	r1,r1,#0
+	bnez	r1,L47
+	nop	; delay slot nop
+	j	L45
+	nop	; delay slot nop
+L47:
+	addi	r1,r0,#1
+	lw	r2,-12(r30)
+	sll	r1,r1,r2
+	lw	r2,(r30)
+	and	r1,r1,r2
+	snei	r2,r1,#0
+	beqz	r2,L48
+	nop	; delay slot nop
+	j	L46
+	nop	; delay slot nop
+L48:
+	addi	r1,r0,#31
+	lw	r3,-12(r30)
+	sub	r2,r1,r3
+	add	r1,r0,r2
+	j	L43
+	nop	; delay slot nop
+L49:
+L46:
+	j	L44
+	nop	; delay slot nop
+L45:
+	addi	r1,r0,#0
+	j	L43
+	nop	; delay slot nop
+L43:
+	lw	r2,0(r29)
+	lw	r3,4(r29)
+	lw	r31,-8(r30)
+	add	r29,r0,r30
+	lw	r30,-4(r30)
+	jr	r31
+	nop
+.endproc _find_Open_Bit
+	.align 2
+.proc _find_Open_Block
+.global _find_Open_Block
+_find_Open_Block:
+;  Function 'find_Open_Block'; 0 bytes of locals, 2 regs to save.
+	sw	-4(r29),r30	; push fp
+	add	r30,r0,r29	; fp = sp
+	sw	-8(r29),r31	; push ret addr
+	subui	r29,r29,#16	; alloc local storage
+	sw	0(r29),r2
+	sw	4(r29),r3
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,4(r30)
+	sw	(r1),r2
+	jal	_find_Open_Bit
+	nop	; delay slot nop
+	addi	r29,r29,#8
+	lw	r2,(r30)
+	add	r3,r0,r2
+	slli	r2,r3,#0x5
+	add	r3,r2,r1
+	add	r1,r0,r3
+	j	L50
+	nop	; delay slot nop
+L50:
+	lw	r2,0(r29)
+	lw	r3,4(r29)
+	lw	r31,-8(r30)
+	add	r29,r0,r30
+	lw	r30,-4(r30)
+	jr	r31
+	nop
+.endproc _find_Open_Block
 .data
 	.align 2
 LC19:
@@ -1039,12 +1167,18 @@ LC20:
 	.align 2
 LC21:
 	.ascii "Error FBV Lock Release Failed\n\000"
+	.align 2
+LC22:
+	.ascii "I RAN CORRECTLY\n\000"
+	.align 2
+LC23:
+	.ascii "All Blocks are Occupied\n\000"
 .text
 	.align 2
 .proc _DfsAllocateBlock
 .global _DfsAllocateBlock
 _DfsAllocateBlock:
-;  Function 'DfsAllocateBlock'; 24 bytes of locals, 3 regs to save.
+;  Function 'DfsAllocateBlock'; 24 bytes of locals, 4 regs to save.
 	sw	-4(r29),r30	; push fp
 	add	r30,r0,r29	; fp = sp
 	sw	-8(r29),r31	; push ret addr
@@ -1052,6 +1186,7 @@ _DfsAllocateBlock:
 	sw	0(r29),r2
 	sw	4(r29),r3
 	sw	8(r29),r4
+	sw	12(r29),r5
 	addi	r29,r29,#-8
 	add	r1,r0,r29
 	lhi	r2,((LC19)>>16)&0xffff
@@ -1064,12 +1199,12 @@ _DfsAllocateBlock:
 	jal	_DfsCheckSystem
 	nop	; delay slot nop
 	seqi	r2,r1,#-1
-	beqz	r2,L41
+	beqz	r2,L52
 	nop	; delay slot nop
 	addi	r1,r0,#-1
-	j	L40
+	j	L51
 	nop	; delay slot nop
-L41:
+L52:
 	addi	r29,r29,#-8
 	add	r1,r0,r29
 	lhi	r2,((_fbv_lock)>>16)&0xffff
@@ -1080,7 +1215,7 @@ L41:
 	nop	; delay slot nop
 	addi	r29,r29,#8
 	snei	r2,r1,#1
-	beqz	r2,L42
+	beqz	r2,L53
 	nop	; delay slot nop
 	addi	r29,r29,#-8
 	add	r1,r0,r29
@@ -1091,149 +1226,81 @@ L41:
 	nop	; delay slot nop
 	addi	r29,r29,#8
 	addi	r1,r0,#-1
-	j	L40
+	j	L51
 	nop	; delay slot nop
-L42:
+L53:
 	nop
 	addi	r1,r0,#0
 	sw	-12(r30),r1
-L43:
+L54:
 	lw	r1,-12(r30)
 	sleui	r2,r1,#511
-	bnez	r2,L46
+	bnez	r2,L57
 	nop	; delay slot nop
-	j	L44
+	j	L55
 	nop	; delay slot nop
-L46:
-	addi	r1,r0,#1
-	sw	-20(r30),r1
+L57:
 	lw	r1,-12(r30)
 	addi	r2,r0,#4
 	movi2fp	f0,r1
 	movi2fp	f1,r2
 	mult	f0,f0,f1
 	movfp2i	r1,f0
-	lhi	r4,((_fbv)>>16)&0xffff
-	addui	r4,r4,(_fbv)&0xffff
-	add	r2,r1,r4
+	lhi	r5,((_fbv)>>16)&0xffff
+	addui	r5,r5,(_fbv)&0xffff
+	add	r2,r1,r5
+	lhi	r1,((_negativeone)>>16)&0xffff
+	addui	r1,r1,(_negativeone)&0xffff
+	lw	r2,(r2)
+	lw	r1,(r1)
+	sne	r2,r2,r1
+	beqz	r2,L56
+	nop	; delay slot nop
 	addi	r29,r29,#-8
 	add	r1,r0,r29
-	addi	r3,r0,#0
-	sw	(r1),r3
-	jal	_invert
-	nop	; delay slot nop
-	addi	r29,r29,#8
-	lw	r2,(r2)
-	sne	r1,r2,r1
-	beqz	r1,L45
-	nop	; delay slot nop
-	addi	r1,r0,#0
-	sw	-16(r30),r1
-L48:
-	lw	r1,-16(r30)
-	sleui	r2,r1,#31
-	bnez	r2,L51
-	nop	; delay slot nop
-	j	L45
-	nop	; delay slot nop
-L51:
-	lw	r1,-12(r30)
-	addi	r2,r0,#4
-	movi2fp	f0,r1
-	movi2fp	f1,r2
-	mult	f0,f0,f1
-	movfp2i	r1,f0
-	lhi	r4,((_fbv)>>16)&0xffff
-	addui	r4,r4,(_fbv)&0xffff
-	add	r2,r1,r4
-	lw	r1,(r2)
-	lw	r2,-20(r30)
-	and	r1,r1,r2
-	sw	-28(r30),r1
-	lw	r1,-28(r30)
-	snei	r2,r1,#0
-	beqz	r2,L52
-	nop	; delay slot nop
-	lw	r1,-12(r30)
-	addi	r3,r0,#4
-	movi2fp	f0,r1
-	movi2fp	f1,r3
-	mult	f0,f0,f1
-	movfp2i	r2,f0
-	lhi	r4,((_fbv)>>16)&0xffff
-	addui	r4,r4,(_fbv)&0xffff
-	add	r1,r2,r4
+	lw	r2,-12(r30)
+	sw	(r1),r2
 	lw	r2,-12(r30)
 	addi	r3,r0,#4
 	movi2fp	f0,r2
 	movi2fp	f1,r3
 	mult	f0,f0,f1
 	movfp2i	r2,f0
-	lhi	r4,((_fbv)>>16)&0xffff
-	addui	r4,r4,(_fbv)&0xffff
-	add	r3,r2,r4
+	lhi	r5,((_fbv)>>16)&0xffff
+	addui	r5,r5,(_fbv)&0xffff
+	add	r3,r2,r5
 	lw	r2,(r3)
-	lw	r3,-20(r30)
-	xor	r2,r2,r3
-	sw	(r1),r2
+	sw	4(r1),r2
+	jal	_find_Open_Block
+	nop	; delay slot nop
+	addi	r29,r29,#8
+	sw	-32(r30),r1
 	lw	r1,-12(r30)
-	add	r2,r0,r1
-	slli	r1,r2,#0x5
-	lw	r2,-16(r30)
-	add	r1,r1,r2
-	sw	-24(r30),r1
-	addi	r29,r29,#-8
-	add	r1,r0,r29
-	lhi	r2,((_fbv_lock)>>16)&0xffff
-	addui	r2,r2,(_fbv_lock)&0xffff
-	lw	r3,(r2)
-	snei	r2,r3,#1
-	sw	(r1),r2
-	jal	_LockHandleRelease
-	nop	; delay slot nop
-	addi	r29,r29,#8
-	snei	r2,r1,#0
-	beqz	r2,L53
-	nop	; delay slot nop
-	addi	r29,r29,#-8
-	add	r1,r0,r29
-	lhi	r2,((LC21)>>16)&0xffff
-	addui	r2,r2,(LC21)&0xffff
-	sw	(r1),r2
-	jal	_printf
-	nop	; delay slot nop
-	addi	r29,r29,#8
-	addi	r1,r0,#-1
-	j	L40
-	nop	; delay slot nop
-L53:
-	lw	r1,-24(r30)
-	j	L40
-	nop	; delay slot nop
-	j	L54
-	nop	; delay slot nop
-L52:
-	lw	r1,-20(r30)
-	slli	r2,r1,#0x1
-	sw	-20(r30),r2
-L54:
-L50:
-	lw	r2,-16(r30)
-	addi	r1,r2,#1
-	add	r2,r0,r1
-	sw	-16(r30),r2
-	j	L48
-	nop	; delay slot nop
-L49:
-L47:
-L45:
+	addi	r3,r0,#4
+	movi2fp	f0,r1
+	movi2fp	f1,r3
+	mult	f0,f0,f1
+	movfp2i	r2,f0
+	lhi	r5,((_fbv)>>16)&0xffff
+	addui	r5,r5,(_fbv)&0xffff
+	add	r1,r2,r5
 	lw	r2,-12(r30)
-	addi	r1,r2,#1
-	add	r2,r0,r1
-	sw	-12(r30),r2
-	j	L43
-	nop	; delay slot nop
-L44:
+	addi	r4,r0,#4
+	movi2fp	f0,r2
+	movi2fp	f1,r4
+	mult	f0,f0,f1
+	movfp2i	r3,f0
+	lhi	r5,((_fbv)>>16)&0xffff
+	addui	r5,r5,(_fbv)&0xffff
+	add	r2,r3,r5
+	addi	r3,r0,#31
+	lw	r4,-32(r30)
+	sub	r3,r3,r4
+	addi	r4,r0,#1
+	sll	r3,r4,r3
+	lw	r2,(r2)
+	xor	r3,r2,r3
+	sw	(r1),r3
 	addi	r29,r29,#-8
 	add	r1,r0,r29
 	lhi	r2,((_fbv_lock)>>16)&0xffff
@@ -1244,7 +1311,7 @@ L44:
 	nop	; delay slot nop
 	addi	r29,r29,#8
 	snei	r2,r1,#1
-	beqz	r2,L55
+	beqz	r2,L59
 	nop	; delay slot nop
 	addi	r29,r29,#-8
 	add	r1,r0,r29
@@ -1255,16 +1322,69 @@ L44:
 	nop	; delay slot nop
 	addi	r29,r29,#8
 	addi	r1,r0,#-1
-	j	L40
+	j	L51
+	nop	; delay slot nop
+L59:
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((LC22)>>16)&0xffff
+	addui	r2,r2,(LC22)&0xffff
+	sw	(r1),r2
+	jal	_printf
+	nop	; delay slot nop
+	addi	r29,r29,#8
+	lw	r1,-32(r30)
+	j	L51
+	nop	; delay slot nop
+L58:
+L56:
+	lw	r2,-12(r30)
+	addi	r1,r2,#1
+	add	r2,r0,r1
+	sw	-12(r30),r2
+	j	L54
 	nop	; delay slot nop
 L55:
-	addi	r1,r0,#1
-	j	L40
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((_fbv_lock)>>16)&0xffff
+	addui	r2,r2,(_fbv_lock)&0xffff
+	lw	r3,(r2)
+	sw	(r1),r3
+	jal	_LockHandleRelease
 	nop	; delay slot nop
-L40:
+	addi	r29,r29,#8
+	snei	r2,r1,#1
+	beqz	r2,L60
+	nop	; delay slot nop
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((LC21)>>16)&0xffff
+	addui	r2,r2,(LC21)&0xffff
+	sw	(r1),r2
+	jal	_printf
+	nop	; delay slot nop
+	addi	r29,r29,#8
+	addi	r1,r0,#-1
+	j	L51
+	nop	; delay slot nop
+L60:
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((LC23)>>16)&0xffff
+	addui	r2,r2,(LC23)&0xffff
+	sw	(r1),r2
+	jal	_printf
+	nop	; delay slot nop
+	addi	r29,r29,#8
+	addi	r1,r0,#-1
+	j	L51
+	nop	; delay slot nop
+L51:
 	lw	r2,0(r29)
 	lw	r3,4(r29)
 	lw	r4,8(r29)
+	lw	r5,12(r29)
 	lw	r31,-8(r30)
 	add	r29,r0,r30
 	lw	r30,-4(r30)
@@ -1293,7 +1413,7 @@ _DfsFreeBlock:
 	nop	; delay slot nop
 	addi	r29,r29,#8
 	snei	r2,r1,#1
-	beqz	r2,L57
+	beqz	r2,L62
 	nop	; delay slot nop
 	addi	r29,r29,#-8
 	add	r1,r0,r29
@@ -1304,9 +1424,9 @@ _DfsFreeBlock:
 	nop	; delay slot nop
 	addi	r29,r29,#8
 	addi	r1,r0,#-1
-	j	L56
+	j	L61
 	nop	; delay slot nop
-L57:
+L62:
 	lw	r2,(r30)
 	srli	r1,r2,#0x5
 	sw	-12(r30),r1
@@ -1349,7 +1469,7 @@ L57:
 	nop	; delay slot nop
 	addi	r29,r29,#8
 	snei	r2,r1,#1
-	beqz	r2,L58
+	beqz	r2,L63
 	nop	; delay slot nop
 	addi	r29,r29,#-8
 	add	r1,r0,r29
@@ -1360,13 +1480,13 @@ L57:
 	nop	; delay slot nop
 	addi	r29,r29,#8
 	addi	r1,r0,#-1
-	j	L56
+	j	L61
 	nop	; delay slot nop
-L58:
+L63:
 	addi	r1,r0,#1
-	j	L56
+	j	L61
 	nop	; delay slot nop
-L56:
+L61:
 	lw	r2,0(r29)
 	lw	r3,4(r29)
 	lw	r4,8(r29)
@@ -1386,9 +1506,9 @@ _DfsReadBlock:
 	sw	-8(r29),r31	; push ret addr
 	subui	r29,r29,#8	; alloc local storage
 	addi	r1,r0,#-1
-	j	L59
+	j	L64
 	nop	; delay slot nop
-L59:
+L64:
 	lw	r31,-8(r30)
 	add	r29,r0,r30
 	lw	r30,-4(r30)
@@ -1405,9 +1525,9 @@ _DfsWriteBlock:
 	sw	-8(r29),r31	; push ret addr
 	subui	r29,r29,#8	; alloc local storage
 	addi	r1,r0,#-1
-	j	L60
+	j	L65
 	nop	; delay slot nop
-L60:
+L65:
 	lw	r31,-8(r30)
 	add	r29,r0,r30
 	lw	r30,-4(r30)
@@ -1416,7 +1536,7 @@ L60:
 .endproc _DfsWriteBlock
 .data
 	.align 2
-LC22:
+LC24:
 	.ascii "Error: Filename is too large, make it less than DFS_FILENAME_SIZE: %d\n"
 	.ascii "\000"
 .text
@@ -1442,12 +1562,12 @@ _DfsInodeFilenameExists:
 	nop	; delay slot nop
 	addi	r29,r29,#8
 	sgti	r2,r1,#44
-	beqz	r2,L62
+	beqz	r2,L67
 	nop	; delay slot nop
 	addi	r29,r29,#-8
 	add	r1,r0,r29
-	lhi	r2,((LC22)>>16)&0xffff
-	addui	r2,r2,(LC22)&0xffff
+	lhi	r2,((LC24)>>16)&0xffff
+	addui	r2,r2,(LC24)&0xffff
 	sw	(r1),r2
 	addi	r2,r0,#44
 	sw	4(r1),r2
@@ -1455,20 +1575,20 @@ _DfsInodeFilenameExists:
 	nop	; delay slot nop
 	addi	r29,r29,#8
 	addi	r1,r0,#-1
-	j	L61
+	j	L66
 	nop	; delay slot nop
-L62:
+L67:
 	nop
 	addi	r1,r0,#0
 	sw	-12(r30),r1
-L63:
+L68:
 	lw	r1,-12(r30)
 	sleui	r2,r1,#191
-	bnez	r2,L66
+	bnez	r2,L71
 	nop	; delay slot nop
-	j	L64
+	j	L69
 	nop	; delay slot nop
-L66:
+L71:
 	lw	r1,-12(r30)
 	add	r3,r0,r1
 	slli	r2,r3,#0x1
@@ -1479,7 +1599,7 @@ L66:
 	add	r2,r1,r6
 	lw	r1,(r2)
 	seqi	r2,r1,#1
-	beqz	r2,L65
+	beqz	r2,L70
 	nop	; delay slot nop
 	addi	r29,r29,#-8
 	add	r1,r0,r29
@@ -1506,25 +1626,25 @@ L66:
 	nop	; delay slot nop
 	addi	r29,r29,#16
 	snei	r2,r1,#0
-	bnez	r2,L65
+	bnez	r2,L70
 	nop	; delay slot nop
 	lw	r1,-12(r30)
-	j	L61
+	j	L66
 	nop	; delay slot nop
-L68:
-L67:
-L65:
+L73:
+L72:
+L70:
 	lw	r2,-12(r30)
 	addi	r1,r2,#1
 	add	r2,r0,r1
 	sw	-12(r30),r2
-	j	L63
+	j	L68
 	nop	; delay slot nop
-L64:
+L69:
 	addi	r1,r0,#-1
-	j	L61
+	j	L66
 	nop	; delay slot nop
-L61:
+L66:
 	lw	r2,0(r29)
 	lw	r3,4(r29)
 	lw	r4,8(r29)
@@ -1538,13 +1658,13 @@ L61:
 .endproc _DfsInodeFilenameExists
 .data
 	.align 2
-LC23:
+LC25:
 	.ascii "Error: Inode Lock Unavailable\n\000"
 	.align 2
-LC24:
+LC26:
 	.ascii "Error: Inode Lock Unable to Release\n\000"
 	.align 2
-LC25:
+LC27:
 	.ascii "Error: Max Capacity of Inodes have been reached\n\000"
 .text
 	.align 2
@@ -1570,12 +1690,12 @@ _DfsInodeOpen:
 	sw	-12(r30),r1
 	lw	r1,-12(r30)
 	snei	r2,r1,#-1
-	beqz	r2,L70
+	beqz	r2,L75
 	nop	; delay slot nop
 	lw	r1,-12(r30)
-	j	L69
+	j	L74
 	nop	; delay slot nop
-L70:
+L75:
 	addi	r29,r29,#-8
 	add	r1,r0,r29
 	lw	r2,(r30)
@@ -1584,12 +1704,12 @@ L70:
 	nop	; delay slot nop
 	addi	r29,r29,#8
 	sgti	r2,r1,#44
-	beqz	r2,L71
+	beqz	r2,L76
 	nop	; delay slot nop
 	addi	r29,r29,#-8
 	add	r1,r0,r29
-	lhi	r2,((LC22)>>16)&0xffff
-	addui	r2,r2,(LC22)&0xffff
+	lhi	r2,((LC24)>>16)&0xffff
+	addui	r2,r2,(LC24)&0xffff
 	sw	(r1),r2
 	addi	r2,r0,#44
 	sw	4(r1),r2
@@ -1597,9 +1717,9 @@ L70:
 	nop	; delay slot nop
 	addi	r29,r29,#8
 	addi	r1,r0,#-1
-	j	L69
+	j	L74
 	nop	; delay slot nop
-L71:
+L76:
 	addi	r29,r29,#-8
 	add	r1,r0,r29
 	lhi	r2,((_inode_lock)>>16)&0xffff
@@ -1610,31 +1730,31 @@ L71:
 	nop	; delay slot nop
 	addi	r29,r29,#8
 	snei	r2,r1,#1
-	beqz	r2,L72
+	beqz	r2,L77
 	nop	; delay slot nop
 	addi	r29,r29,#-8
 	add	r1,r0,r29
-	lhi	r2,((LC23)>>16)&0xffff
-	addui	r2,r2,(LC23)&0xffff
+	lhi	r2,((LC25)>>16)&0xffff
+	addui	r2,r2,(LC25)&0xffff
 	sw	(r1),r2
 	jal	_printf
 	nop	; delay slot nop
 	addi	r29,r29,#8
 	addi	r1,r0,#-1
-	j	L69
+	j	L74
 	nop	; delay slot nop
-L72:
+L77:
 	nop
 	addi	r1,r0,#0
 	sw	-16(r30),r1
-L73:
+L78:
 	lw	r1,-16(r30)
 	sleui	r2,r1,#191
-	bnez	r2,L76
+	bnez	r2,L81
 	nop	; delay slot nop
-	j	L74
+	j	L79
 	nop	; delay slot nop
-L76:
+L81:
 	lw	r1,-16(r30)
 	add	r3,r0,r1
 	slli	r2,r3,#0x1
@@ -1645,7 +1765,7 @@ L76:
 	add	r2,r1,r5
 	lw	r1,(r2)
 	snei	r2,r1,#0
-	bnez	r2,L75
+	bnez	r2,L80
 	nop	; delay slot nop
 	lw	r1,-16(r30)
 	sw	-12(r30),r1
@@ -1689,14 +1809,14 @@ L76:
 	addi	r29,r29,#16
 	addi	r1,r0,#0
 	sw	-20(r30),r1
-L78:
+L83:
 	lw	r1,-20(r30)
 	sleui	r2,r1,#9
-	bnez	r2,L81
+	bnez	r2,L86
 	nop	; delay slot nop
-	j	L79
+	j	L84
 	nop	; delay slot nop
-L81:
+L86:
 	lw	r1,-16(r30)
 	add	r3,r0,r1
 	slli	r2,r3,#0x1
@@ -1715,14 +1835,14 @@ L81:
 	addi	r2,r1,#52
 	addi	r1,r0,#0
 	sw	(r2),r1
-L80:
+L85:
 	lw	r2,-20(r30)
 	addi	r1,r2,#1
 	add	r2,r0,r1
 	sw	-20(r30),r2
-	j	L78
+	j	L83
 	nop	; delay slot nop
-L79:
+L84:
 	lhi	r1,((_inodes)>>16)&0xffff
 	addui	r1,r1,(_inodes)&0xffff
 	lw	r2,-16(r30)
@@ -1733,17 +1853,17 @@ L79:
 	add	r1,r1,r2
 	addi	r2,r0,#0
 	sw	92(r1),r2
-	j	L74
+	j	L79
 	nop	; delay slot nop
-L77:
-L75:
+L82:
+L80:
 	lw	r2,-16(r30)
 	addi	r1,r2,#1
 	add	r2,r0,r1
 	sw	-16(r30),r2
-	j	L73
+	j	L78
 	nop	; delay slot nop
-L74:
+L79:
 	addi	r29,r29,#-8
 	add	r1,r0,r29
 	lhi	r2,((_inode_lock)>>16)&0xffff
@@ -1754,40 +1874,40 @@ L74:
 	nop	; delay slot nop
 	addi	r29,r29,#8
 	snei	r2,r1,#1
-	beqz	r2,L82
+	beqz	r2,L87
 	nop	; delay slot nop
 	addi	r29,r29,#-8
 	add	r1,r0,r29
-	lhi	r2,((LC24)>>16)&0xffff
-	addui	r2,r2,(LC24)&0xffff
+	lhi	r2,((LC26)>>16)&0xffff
+	addui	r2,r2,(LC26)&0xffff
 	sw	(r1),r2
 	jal	_printf
 	nop	; delay slot nop
 	addi	r29,r29,#8
 	addi	r1,r0,#-1
-	j	L69
+	j	L74
 	nop	; delay slot nop
-L82:
+L87:
 	lw	r1,-16(r30)
 	seqi	r2,r1,#192
-	beqz	r2,L83
+	beqz	r2,L88
 	nop	; delay slot nop
 	addi	r29,r29,#-8
 	add	r1,r0,r29
-	lhi	r2,((LC25)>>16)&0xffff
-	addui	r2,r2,(LC25)&0xffff
+	lhi	r2,((LC27)>>16)&0xffff
+	addui	r2,r2,(LC27)&0xffff
 	sw	(r1),r2
 	jal	_printf
 	nop	; delay slot nop
 	addi	r29,r29,#8
 	addi	r1,r0,#-1
-	j	L69
+	j	L74
 	nop	; delay slot nop
-L83:
+L88:
 	lw	r1,-12(r30)
-	j	L69
+	j	L74
 	nop	; delay slot nop
-L69:
+L74:
 	lw	r2,0(r29)
 	lw	r3,4(r29)
 	lw	r4,8(r29)
@@ -1808,9 +1928,9 @@ _DfsInodeDelete:
 	sw	-8(r29),r31	; push ret addr
 	subui	r29,r29,#8	; alloc local storage
 	addi	r1,r0,#-1
-	j	L84
+	j	L89
 	nop	; delay slot nop
-L84:
+L89:
 	lw	r31,-8(r30)
 	add	r29,r0,r30
 	lw	r30,-4(r30)
@@ -1827,9 +1947,9 @@ _DfsInodeReadBytes:
 	sw	-8(r29),r31	; push ret addr
 	subui	r29,r29,#8	; alloc local storage
 	addi	r1,r0,#-1
-	j	L85
+	j	L90
 	nop	; delay slot nop
-L85:
+L90:
 	lw	r31,-8(r30)
 	add	r29,r0,r30
 	lw	r30,-4(r30)
@@ -1850,19 +1970,19 @@ _DfsInodeWriteBytes:
 	jal	_DfsCheckSystem
 	nop	; delay slot nop
 	seqi	r2,r1,#-1
-	beqz	r2,L87
+	beqz	r2,L92
 	nop	; delay slot nop
 	addi	r1,r0,#-1
-	j	L86
+	j	L91
 	nop	; delay slot nop
-L87:
+L92:
 	add	r2,r0,r29
 	jal	_DfsAllocateBlock
 	nop	; delay slot nop
 	addi	r1,r0,#-1
-	j	L86
+	j	L91
 	nop	; delay slot nop
-L86:
+L91:
 	lw	r2,0(r29)
 	lw	r31,-8(r30)
 	add	r29,r0,r30
@@ -1886,12 +2006,12 @@ _DfsInodeFilesize:
 	jal	_DfsCheckSystem
 	nop	; delay slot nop
 	seqi	r2,r1,#-1
-	beqz	r2,L89
+	beqz	r2,L94
 	nop	; delay slot nop
 	addi	r1,r0,#-1
-	j	L88
+	j	L93
 	nop	; delay slot nop
-L89:
+L94:
 	lw	r1,(r30)
 	add	r3,r0,r1
 	slli	r2,r3,#0x1
@@ -1901,9 +2021,9 @@ L89:
 	addui	r4,r4,(_inodes)&0xffff
 	add	r2,r1,r4
 	lw	r1,4(r2)
-	j	L88
+	j	L93
 	nop	; delay slot nop
-L88:
+L93:
 	lw	r2,0(r29)
 	lw	r3,4(r29)
 	lw	r4,8(r29)
@@ -1927,9 +2047,9 @@ _DfsInodeAllocateVirtualBlock:
 	jal	_DfsAllocateBlock
 	nop	; delay slot nop
 	addi	r1,r0,#-1
-	j	L90
+	j	L95
 	nop	; delay slot nop
-L90:
+L95:
 	lw	r2,0(r29)
 	lw	r31,-8(r30)
 	add	r29,r0,r30
@@ -1947,9 +2067,9 @@ _DfsInodeTranslateVirtualToFilesys:
 	sw	-8(r29),r31	; push ret addr
 	subui	r29,r29,#8	; alloc local storage
 	addi	r1,r0,#-1
-	j	L91
+	j	L96
 	nop	; delay slot nop
-L91:
+L96:
 	lw	r31,-8(r30)
 	add	r29,r0,r30
 	lw	r30,-4(r30)
@@ -1970,29 +2090,29 @@ _DfsCheckSystem:
 	addui	r1,r1,(_sb)&0xffff
 	lw	r2,(r1)
 	snei	r1,r2,#0
-	bnez	r1,L93
+	bnez	r1,L98
 	nop	; delay slot nop
 	addi	r1,r0,#-1
-	j	L92
+	j	L97
 	nop	; delay slot nop
-	j	L94
+	j	L99
 	nop	; delay slot nop
-L93:
+L98:
 	lhi	r1,((_fs_open)>>16)&0xffff
 	addui	r1,r1,(_fs_open)&0xffff
 	lw	r2,(r1)
 	snei	r1,r2,#0
-	bnez	r1,L94
+	bnez	r1,L99
 	nop	; delay slot nop
 	addi	r1,r0,#-1
-	j	L92
+	j	L97
 	nop	; delay slot nop
-L95:
-L94:
+L100:
+L99:
 	addi	r1,r0,#1
-	j	L92
+	j	L97
 	nop	; delay slot nop
-L92:
+L97:
 	lw	r2,0(r29)
 	lw	r31,-8(r30)
 	add	r29,r0,r30
@@ -2010,37 +2130,6 @@ _sb:
 	.align 2
 _fbv:
 	.space 2048
-.text
-	.align 2
-.proc _invert
-_invert:
-;  Function 'invert'; 0 bytes of locals, 3 regs to save.
-	sw	-4(r29),r30	; push fp
-	add	r30,r0,r29	; fp = sp
-	sw	-8(r29),r31	; push ret addr
-	subui	r29,r29,#24	; alloc local storage
-	sw	0(r29),r2
-	sw	4(r29),r3
-	sw	8(r29),r4
-	lw	r2,(r30)
-	lhi	r1,((_negativeone)>>16)&0xffff
-	addui	r1,r1,(_negativeone)&0xffff
-	lw	r4,(r1)
-	xor	r3,r2,r4
-	add	r1,r0,r3
-	j	L12
-	nop	; delay slot nop
-L12:
-	lw	r2,0(r29)
-	lw	r3,4(r29)
-	lw	r4,8(r29)
-	lw	r31,-8(r30)
-	add	r29,r0,r30
-	lw	r30,-4(r30)
-	jr	r31
-	nop
-.endproc _invert
-.data
 	.align 2
 _fbv_lock:
 	.space 4

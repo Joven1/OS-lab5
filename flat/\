@@ -221,7 +221,7 @@ int DfsOpenFileSystem()
 
 int DfsCloseFileSystem() 
 {
-//TODO: Implement Closing Correctly	
+	
 	//Invalidate Memory's Version
 	DfsInvalidate();
 	return DFS_FAIL;
@@ -262,7 +262,7 @@ uint32 find_Open_Bit(uint32 n)
 
 uint32 find_Open_Block(uint32 index, uint32 block_value)
 {
-	return 32 * index + find_Open_Bit(block_value);
+	return 32 * block + find_Open_Bit(block_value);
 } 
 
 //-----------------------------------------------------------------
@@ -293,23 +293,49 @@ uint32 DfsAllocateBlock()
 		return DFS_FAIL;
 	}
 
+	//in the FBV 0 = not in use, 1 = in use		
+/*	
+	for(i = 0; i < DFS_FBV_MAX_NUM_WORDS; i++) //Loop through the free map
+	{
+		mask = 0x1;
+		if(fbv[i] != invert(0)) //Found a nonzero entry
+		{
+			for(j = 0; j < 32; j++)
+			{
+				check_val_and = fbv[i] & mask;
+				if(check_val_and > 0)
+				{
+					fbv[i] = fbv[i] ^ mask;
+					return_value = (i*32) + j; //Block is number of entries looped + jth available entry
+					if(LockHandleRelease(fbv_lock != SYNC_SUCCESS))
+					{
+						printf("Error FBV Lock Release Failed\n");
+						return DFS_FAIL;
+					}
+
+
+					return return_value;
+				}
+				else
+				{
+					//Check next bits then move mask
+					mask = mask << 1;
+				}
+			}
+		}		
+	}
+*/
+
 	for(i = 0; i < DFS_FBV_MAX_NUM_WORDS; i++)
 	{
-		//Entry with "0" (not in use) has been found
 		if(fbv[i] != negativeone)
 		{
-			block_position = find_Open_Block(i, fbv[i]); //Find the exact block position
-			fbv[i] = fbv[i] ^ (0x1 << (31 - block_position)); //Set the Free Block Vector by left shifting a mask
-			
-			if(LockHandleRelease(fbv_lock) != SYNC_SUCCESS)		
-			{
-				printf("Error FBV Lock Release Failed\n");
-				return DFS_FAIL;
-			}
-
-			//return handle to block
-			return block_position;
-		
+			block_position = find_Open_Block(i, fbv[i]);
+			printf("Block Position is at %d\n", block_position);
+		}
+		if(i == 4)
+		{
+			break;
 		}
 	}
 	// Return handle to block
@@ -319,10 +345,7 @@ uint32 DfsAllocateBlock()
 		printf("Error FBV Lock Release Failed\n");
 		return DFS_FAIL;
 	}
-
-	//If we made it through the for loop, that means no data blocks are available
-	printf("All Blocks are Occupied\n");
-	return DFS_FAIL; 
+	return DFS_SUCCESS;
 }
 
 
