@@ -147,7 +147,7 @@ int DfsOpenFileSystem()
 	//Loop from starting inode to starting block number for free block vector
 	for( i = 0 ; i < inodes_blocks; i++)
 	{
-		ret_val = DiskReadBlock(2 * (sb.start_block_num_inodes_array + i), &buffer);
+		ret_val = DiskReadBlock(byte_ratio * (sb.start_block_num_inodes_array + i), &buffer);
 		if(ret_val != DISK_BLOCKSIZE)
 		{
 			printf("Error: Disk Read Fail full Bytes\n");
@@ -157,7 +157,7 @@ int DfsOpenFileSystem()
 		ptr = ptr + DISK_BLOCKSIZE;
 
 
-		ret_val = DiskReadBlock(2 * (sb.start_block_num_inodes_array + i) + 1, &buffer);
+		ret_val = DiskReadBlock(byte_ratio * (sb.start_block_num_inodes_array + i) + 1, &buffer);
 		if(ret_val != DISK_BLOCKSIZE)
 		{
 			printf("Error: Disk Read Fail full Bytes\n");
@@ -166,24 +166,30 @@ int DfsOpenFileSystem()
 		bcopy(buffer.data, ptr, DISK_BLOCKSIZE); //Copy buffer into ptr 
 		ptr = ptr + DISK_BLOCKSIZE;  	
 	}
-/*
+
   // Read free block vector
   	ptr = (char *) &(fbv[0]);
 
-	//Loop from starting fbv block num to data block num start
-	
-	for( i = byte_ratio * sb.start_block_num_fbv; i < sb.data_block_start; i++)
+	//Loop from starting fbv block num to data block num start (Disk Blocks 38-41) (DFS Blocks 19-20)
+	for( i = sb.start_block_num_fbv; i < sb.data_block_start; i++)
 	{
-		ret_val = DiskReadBlock(i, &buffer);
+		ret_val = DiskReadBlock(byte_ratio * i, &buffer);
 		if(ret_val != DISK_BLOCKSIZE)
 		{
 			printf("Error: Disk Read Fail full Bytes\n");
 			return DFS_FAIL;
-		}
-		
+		}	
 		bcopy(buffer.data, ptr, DISK_BLOCKSIZE); //Copy buffer into ptr 
 		ptr = ptr + DISK_BLOCKSIZE; 
-		 	
+
+		ret_val = DiskReadBlock(byte_ratio * i + 1, &buffer);
+		if(ret_val != DISK_BLOCKSIZE)
+		{
+			printf("Error: Disk Read Fail full Bytes\n");
+			return DFS_FAIL;
+		}	
+		bcopy(buffer.data, ptr, DISK_BLOCKSIZE); //Copy buffer into ptr 
+		ptr = ptr + DISK_BLOCKSIZE; 	 	
 	}	
 
   // Change superblock to be invalid, write back to disk, then change 
@@ -202,7 +208,6 @@ int DfsOpenFileSystem()
 
 	//Change to be valid in memory
 	sb.valid = true;
-*/
 	return DFS_SUCCESS;
 
 }
@@ -239,7 +244,6 @@ uint32 DfsAllocateBlock()
 	uint32 check_val_and;
 
 	printf("Allocating Block \n");
-	PrintFBV();	
 	// Check that file system has been validly loaded into memory
 	if( DfsCheckSystem() == DFS_FAIL)
 	{

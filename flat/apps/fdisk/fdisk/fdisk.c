@@ -96,7 +96,7 @@ void main (int argc, char *argv[])
 	}
 	
 	fbv[0] = 0xFFFFF800; //Blocks 0-20 are inuse by the DFS 
-	
+	fbv[511] = 0xEEEEEEEE;	
 	ptr = (char *) &(fbv[0]);
 
 	

@@ -1,7 +1,7 @@
 ; Linked by DLX-LD.
 ; MemSize 45056
-; Data size: 20848
-; Text size: 5572
+; Data size: 20832
+; Text size: 5520
 ; Stack size: 8192
 .text 0x1000
 .data 0x3000
@@ -109,12 +109,9 @@ LC5_LF0:
 .ascii "Error: Disk does not exist!\n\000"
 .align 2
 LC6_LF0:
-.ascii "Hello WORLD!\000"
-.align 2
-LC7_LF0:
 .ascii "Running writing into the super block\n\000"
 .align 2
-LC8_LF0:
+LC7_LF0:
 .ascii "fdisk (%d): Formatted DFS disk for %d bytes.\n\000"
 .text
 .align 2
@@ -214,7 +211,7 @@ L17_LF0:
 	addi	r2,r2,#16
 	lw	r1,(r2)
 	sltu	r1,r4,r1
-	beqz	r1,L19_LF0
+	beqz	r1,L43_LF0
 	nop; not filled.
 	add	r5,r0,r2
 	lhi	r31,((_inodes)>>16)&0xffff
@@ -241,24 +238,8 @@ L25_LF0:
 	sltu	r1,r4,r1
 	bnez	r1,L21_LF0
 	nop; not filled.
-L19_LF0:
-	lhi	r2,((_inodes)>>16)&0xffff
-	addui	r2,r2,(_inodes)&0xffff
-	addi	r9,r0,#1
-	sw	18336(r2),r9
-	addi	r9,r0,#69
-	sw	18340(r2),r9
-	lhi	r1,((LC6_LF0)>>16)&0xffff
-	addui	r1,r1,(LC6_LF0)&0xffff
-	lw	r9,(r1)
-	sw	18344(r2),r9
-	lw	r9,4(r1)
-	sw	18348(r2),r9
-	lw	r9,8(r1)
-	sw	18352(r2),r9
-	lb	r1,12(r1)
-	sb	18356(r2),r1
 	addi	r4,r0,#0
+L43_LF0:
 	lhi	r3,((_sb+8)>>16)&0xffff
 	addui	r3,r3,(_sb+8)&0xffff
 	lw	r1,(r3)
@@ -283,6 +264,9 @@ L29_LF0:
 	addui	r1,r1,(_fbv)&0xffff
 	addi	r9,r0,#-2048
 	sw	(r1),r9
+	lhi	r9,#-4370
+	addui	r9,r9,#61166
+	sw	2044(r1),r9
 	add	r3,r0,r1
 	lhi	r1,((_sb+20)>>16)&0xffff
 	addui	r1,r1,(_sb+20)&0xffff
@@ -352,8 +336,8 @@ L34_LF0:
 	sw	8(r29),r9
 	jal	_bcopy
 	nop; not filled.
-	lhi	r9,((LC7_LF0)>>16)&0xffff
-	addui	r9,r9,(LC7_LF0)&0xffff
+	lhi	r9,((LC6_LF0)>>16)&0xffff
+	addui	r9,r9,(LC6_LF0)&0xffff
 	sw	(r29),r9
 	jal	_Printf
 	nop; not filled.
@@ -432,8 +416,8 @@ L39_LF0:
 	jal	_getpid
 	nop; not filled.
 	addi	r29,r29,#-16
-	lhi	r9,((LC8_LF0)>>16)&0xffff
-	addui	r9,r9,(LC8_LF0)&0xffff
+	lhi	r9,((LC7_LF0)>>16)&0xffff
+	addui	r9,r9,(LC7_LF0)&0xffff
 	sw	(r29),r9
 	sw	4(r29),r1
 	lhi	r1,((_disksize)>>16)&0xffff
@@ -448,7 +432,7 @@ L39_LF0:
 .endproc _main
 .data
 .align 2
-LC9_LF0:
+LC8_LF0:
 .ascii "Failed to write block onto disk\n\000"
 .text
 .align 2
@@ -470,18 +454,18 @@ _FdiskWriteBlock:
 	nop; not filled.
 	addi	r29,r29,#8
 	seqi	r1,r1,#-1
-	beqz	r1,L46_LF0
+	beqz	r1,L47_LF0
 	nop; not filled.
 	addi	r29,r29,#-8
-	lhi	r2,((LC9_LF0)>>16)&0xffff
-	addui	r2,r2,(LC9_LF0)&0xffff
+	lhi	r2,((LC8_LF0)>>16)&0xffff
+	addui	r2,r2,(LC8_LF0)&0xffff
 	sw	(r29),r2
 	jal	_Printf
 	nop; not filled.
 	jal	_Exit
 	nop; not filled.
 	addi	r29,r29,#8
-L46_LF0:
+L47_LF0:
 	addi	r1,r0,#1
 	lw	r2,0(r29)
 	lw	r31,-8(r30)
