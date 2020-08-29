@@ -69,7 +69,7 @@ void main (int argc, char *argv[])
 	sb.start_block_num_fbv = FDISK_FBV_BLOCK_START;
 	sb.data_block_start = FDISK_DATA_BLOCK_START;	
   
-  // Make sure the disk exists before doing anything else
+// Make sure the disk exists before doing anything else
 	if(disk_create() == DISK_FAIL)
 	{
 		Printf("Error: Disk does not exist!\n");
@@ -77,7 +77,7 @@ void main (int argc, char *argv[])
 	}	
 
   // Write all inodes as not in use and empty (all zeros)
-	for(i = 0; i < 	DFS_INODE_MAX_NUM; i++)
+	for(i = 0; i < 	sb.size_inodes_array; i++)
 	{
 		inodes[i].inuse = false;
 		inodes[i].size = 0;
@@ -90,7 +90,7 @@ void main (int argc, char *argv[])
 	}
 
   // Next, setup free block vector (fbv) and write free block vector to the disk
-  	for(i = 0; i < DFS_FBV_MAX_NUM_WORDS; i++)
+  	for(i = 0; i < sb.num_blocks/32; i++)
 	{
 		fbv[i] = 0; //0 Means it's free
 	}
@@ -125,15 +125,15 @@ void main (int argc, char *argv[])
 
 	ptr = (char *) &(inodes[0]);
 
-	
-	for(i = 0; i < FDISK_INODE_NUM_BLOCKS; i++)
+	//Loop through and write in inodes 
+	for(i = 0; i < (sizeof(inodes[0]) * sb.size_inodes_array)/sb.block_size; i++)
 	{
 		bcopy(ptr , block.data, diskblocksize);
-		FdiskWriteBlock(2 * (FDISK_INODE_BLOCK_START + i), &block);
+		FdiskWriteBlock(2 * (sb.start_block_num_inodes_array  + i), &block);
 		ptr += diskblocksize;
 
 		bcopy(ptr, block.data, diskblocksize);
-		FdiskWriteBlock(2 * (FDISK_INODE_BLOCK_START + i) + 1, &block);
+		FdiskWriteBlock(2 * (sb.start_block_num_inodes_array  + i) + 1, &block);
 		ptr += diskblocksize;	
 	}
 	
