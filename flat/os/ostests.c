@@ -9,9 +9,8 @@
 void RunOSTests() {
   // STUDENT: run any os-level tests here
   // int i = 0;
-  uint32 handleMeep, handleMarp, handleLong, handleDerp;
+  uint32 handleMeep, handleMarp, handleLong, handleDerp,i;
   char writebuff[BUFFSIZE] = "Hello, World!", readbuff[BUFFSIZE];
-
   /* FSDRIVER BASED TESTS
   printf("RunOSTests: Allocating 16500 blocks\n");
   for (i = 0; i < 16500; i++) {
@@ -69,6 +68,7 @@ void RunOSTests() {
 
   /******** INODE SCENARIO 1: Attempts writing and reading a simple string from the first byte position of an inode, as well as including file size verification ********/
   printf("ostests: Starting INODE SCENARIO 1\n");
+	
   if (DfsInodeFilesize(handleMeep) != 0) {
     printf("ostests: INODE SCENARIO 1 - inode %u size is %d, should be 0!\n", handleMeep, DfsInodeFilesize(handleMeep));
     GracefulExit();

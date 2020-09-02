@@ -54,13 +54,10 @@ void main (int argc, char *argv[])
 		Printf("Success: DFS Inode is 96 bytes!\n");
 	}
  
- 	Printf("The size of the dfs_inode is %d\n", sizeof(dfs_inode));
 	disksize = disk_size();
 	diskblocksize = disk_blocksize();
 	num_filesystem_blocks = DFS_NUM_BLOCKS;
 	
-	
-	//Print out the Sizes 
 	//Initialize the Super Block
 	sb.block_size = DFS_BLOCKSIZE;
 	sb.num_blocks = DFS_NUM_BLOCKS;
@@ -107,7 +104,7 @@ void main (int argc, char *argv[])
 		for(j = 0; j < byte_ratio; j++)
 		{
 			bcopy(ptr, block.data, diskblocksize);
-			FdiskWriteBlock(2*i + j, &block);
+			FdiskWriteBlock(byte_ratio * i + j, &block);
 			ptr = ptr + diskblocksize; //Move Index Address by 512 Bytes 
 		}
 	}
@@ -118,10 +115,8 @@ void main (int argc, char *argv[])
   // boot record is all zeros in the first physical block, and superblock structure goes into the second physical block
 	bzero(block.data, DFS_BLOCKSIZE);
 	bcopy((char *) &sb, block.data, sizeof(dfs_superblock));
-	Printf("Running writing into the super block\n");	
 	FdiskWriteBlock(1, &block);	
-
-
+	
 	ptr = (char *) &(inodes[0]);
 
 	//Loop through and write in inodes 
@@ -130,7 +125,7 @@ void main (int argc, char *argv[])
 		for(j = 0; j < byte_ratio; j++)
 		{
 			bcopy(ptr , block.data, diskblocksize);
-			FdiskWriteBlock(2 * (sb.start_block_num_inodes_array  + i) + j, &block);
+			FdiskWriteBlock(byte_ratio * (sb.start_block_num_inodes_array  + i) + j, &block);
 			ptr += diskblocksize;
 		}
 	}

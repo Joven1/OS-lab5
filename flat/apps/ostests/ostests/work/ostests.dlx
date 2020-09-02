@@ -1,7 +1,7 @@
 ; Linked by DLX-LD.
 ; MemSize 20480
-; Data size: 21
-; Text size: 4052
+; Data size: 38
+; Text size: 4072
 ; Stack size: 8192
 .text 0x1000
 .data 0x2000
@@ -10,6 +10,9 @@
 .align 2
 LC0_LF0:
 .ascii "\n\nRunning OS Tests\n\n\000"
+.align 2
+LC1_LF0:
+.ascii "Made it here\n\000"
 .text
 .align 2
 .proc _main
@@ -25,6 +28,11 @@ _main:
 	addi	r29,r29,#-8
 	lhi	r1,((LC0_LF0)>>16)&0xffff
 	addui	r1,r1,(LC0_LF0)&0xffff
+	sw	(r29),r1
+	jal	_Printf
+	nop; not filled.
+	lhi	r1,((LC1_LF0)>>16)&0xffff
+	addui	r1,r1,(LC1_LF0)&0xffff
 	sw	(r29),r1
 	jal	_Printf
 	nop; not filled.

@@ -3,6 +3,9 @@
 	.align 2
 LC0:
 	.ascii "\n\nRunning OS Tests\n\n\000"
+	.align 2
+LC1:
+	.ascii "Made it here\n\000"
 .text
 	.align 2
 .proc _main
@@ -18,6 +21,11 @@ _main:
 	addi	r29,r29,#-8
 	lhi	r1,((LC0)>>16)&0xffff
 	addui	r1,r1,(LC0)&0xffff
+	sw	(r29),r1
+	jal	_Printf
+	nop	; not filled.
+	lhi	r1,((LC1)>>16)&0xffff
+	addui	r1,r1,(LC1)&0xffff
 	sw	(r29),r1
 	jal	_Printf
 	nop	; not filled.
