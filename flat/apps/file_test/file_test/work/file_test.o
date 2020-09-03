@@ -1,0 +1,497 @@
+; Compiled by GCC
+.data
+	.align 2
+LC0:
+	.ascii "test_file\000"
+	.align 2
+LC1:
+	.ascii "test_file_1\000"
+	.align 2
+LC2:
+	.ascii "\n\ntest1\n\000"
+	.align 2
+LC3:
+	.ascii "rw\000"
+	.align 2
+LC4:
+	.ascii "called file_open, return %d\n\000"
+	.align 2
+LC5:
+	.ascii "\n\ntest2\n\000"
+	.align 2
+LC6:
+	.ascii "called file_close, return %d\n\000"
+	.align 2
+LC7:
+	.ascii "\n\ntest3\n\000"
+	.align 2
+LC8:
+	.ascii "called file_write, return %d\n\000"
+	.align 2
+LC9:
+	.ascii "\n\ntest4\n\000"
+	.align 2
+LC10:
+	.ascii "called file_read, return %d\n\000"
+	.align 2
+LC11:
+	.ascii "%c\000"
+	.align 2
+LC12:
+	.ascii "\n\000"
+	.align 2
+LC13:
+	.ascii "\n\ntest5 integreated test\n\000"
+	.align 2
+LC14:
+	.ascii "w\000"
+	.align 2
+LC15:
+	.ascii "open file - handle %d\n\000"
+	.align 2
+LC16:
+	.ascii "write to file, return %d\n\000"
+	.align 2
+LC17:
+	.ascii "close file, return %d\n\000"
+	.align 2
+LC18:
+	.ascii "open same file again, return %d\n\000"
+	.align 2
+LC19:
+	.ascii "read file into read_data, return %d\n\000"
+	.align 2
+LC20:
+	.ascii "print read_data content: \n\000"
+	.align 2
+LC21:
+	.ascii "\n\ntest6 integreated test with seek\n\000"
+	.align 2
+LC22:
+	.ascii "write to file 2000, return %d\n\000"
+	.align 2
+LC23:
+	.ascii "file seek -2010, return %d\n\000"
+	.align 2
+LC24:
+	.ascii "print read_data content (should only see 10 z characters): \n\000"
+	.align 2
+LC25:
+	.ascii "\n\ntest7\n\000"
+	.align 2
+LC26:
+	.ascii "called file_delete, return %d\n\000"
+.text
+	.align 2
+.proc _main
+.global _main
+_main:
+;  Function 'main'; 8192 bytes of locals, 0 regs to save.
+	sw	-4(r29),r30	; push fp
+	add	r30,r0,r29	; fp = sp
+	sw	-8(r29),r31	; push ret addr
+	subui	r29,r29,#8200	; alloc local storage
+	jal	___main
+	nop	; not filled.
+	lhi	r6,((LC0)>>16)&0xffff
+	addui	r6,r6,(LC0)&0xffff
+	lhi	r7,((LC1)>>16)&0xffff
+	addui	r7,r7,(LC1)&0xffff
+	addi	r29,r29,#-8
+	lhi	r8,((LC2)>>16)&0xffff
+	addui	r8,r8,(LC2)&0xffff
+	sw	(r29),r8
+	jal	_Printf
+	nop	; not filled.
+	sw	(r29),r6
+	lhi	r3,((LC3)>>16)&0xffff
+	addui	r3,r3,(LC3)&0xffff
+	sw	4(r29),r3
+	jal	_file_open
+	nop	; not filled.
+	add	r4,r0,r1
+	lhi	r2,((LC4)>>16)&0xffff
+	addui	r2,r2,(LC4)&0xffff
+	sw	(r29),r2
+	sw	4(r29),r4
+	jal	_Printf
+	nop	; not filled.
+	lhi	r8,((LC5)>>16)&0xffff
+	addui	r8,r8,(LC5)&0xffff
+	sw	(r29),r8
+	jal	_Printf
+	nop	; not filled.
+	sw	(r29),r4
+	jal	_file_close
+	nop	; not filled.
+	add	r4,r0,r1
+	lhi	r8,((LC6)>>16)&0xffff
+	addui	r8,r8,(LC6)&0xffff
+	sw	(r29),r8
+	sw	4(r29),r4
+	jal	_Printf
+	nop	; not filled.
+	lhi	r8,((LC7)>>16)&0xffff
+	addui	r8,r8,(LC7)&0xffff
+	sw	(r29),r8
+	jal	_Printf
+	nop	; not filled.
+	sw	(r29),r6
+	sw	4(r29),r3
+	jal	_file_open
+	nop	; not filled.
+	add	r4,r0,r1
+	sw	(r29),r2
+	sw	4(r29),r4
+	jal	_Printf
+	nop	; not filled.
+	add	r5,r0,r4
+	addi	r29,r29,#8
+	addi	r2,r30,#-4104
+	addi	r3,r30,#-2057
+L5:
+	addi	r8,r0,(#0x41)&0xff
+	sb	(r2),r8
+	addi	r2,r2,#1
+	sle	r1,r2,r3
+	bnez	r1,L5
+	nop	; not filled.
+	addi	r29,r29,#-16
+	sw	(r29),r5
+	addi	r1,r30,#-4104
+	sw	4(r29),r1
+	addi	r8,r0,#512
+	sw	8(r29),r8
+	jal	_file_write
+	nop	; not filled.
+	add	r4,r0,r1
+	lhi	r8,((LC8)>>16)&0xffff
+	addui	r8,r8,(LC8)&0xffff
+	sw	(r29),r8
+	sw	4(r29),r4
+	jal	_Printf
+	nop	; not filled.
+	sw	(r29),r5
+	jal	_file_close
+	nop	; not filled.
+	add	r4,r0,r1
+	lhi	r8,((LC6)>>16)&0xffff
+	addui	r8,r8,(LC6)&0xffff
+	sw	(r29),r8
+	sw	4(r29),r4
+	jal	_Printf
+	nop	; not filled.
+	lhi	r8,((LC9)>>16)&0xffff
+	addui	r8,r8,(LC9)&0xffff
+	sw	(r29),r8
+	jal	_Printf
+	nop	; not filled.
+	sw	(r29),r6
+	lhi	r1,((LC3)>>16)&0xffff
+	addui	r1,r1,(LC3)&0xffff
+	sw	4(r29),r1
+	jal	_file_open
+	nop	; not filled.
+	add	r4,r0,r1
+	lhi	r8,((LC4)>>16)&0xffff
+	addui	r8,r8,(LC4)&0xffff
+	sw	(r29),r8
+	sw	4(r29),r4
+	jal	_Printf
+	nop	; not filled.
+	add	r5,r0,r4
+	addi	r29,r29,#16
+	addi	r2,r30,#-8200
+	addi	r3,r30,#-6153
+L10:
+	addi	r8,r0,(#0x0)&0xff
+	sb	(r2),r8
+	addi	r2,r2,#1
+	sle	r1,r2,r3
+	bnez	r1,L10
+	nop	; not filled.
+	addi	r29,r29,#-16
+	sw	(r29),r5
+	addi	r2,r30,#-8200
+	sw	4(r29),r2
+	addi	r8,r0,#512
+	sw	8(r29),r8
+	jal	_file_read
+	nop	; not filled.
+	add	r4,r0,r1
+	lhi	r8,((LC10)>>16)&0xffff
+	addui	r8,r8,(LC10)&0xffff
+	sw	(r29),r8
+	sw	4(r29),r4
+	jal	_Printf
+	nop	; not filled.
+	addi	r29,r29,#16
+	addi	r3,r30,#-7177
+L15:
+	addi	r29,r29,#-8
+	lhi	r8,((LC11)>>16)&0xffff
+	addui	r8,r8,(LC11)&0xffff
+	sw	(r29),r8
+	lbu	r1,(r2)
+	sw	4(r29),r1
+	jal	_Printf
+	nop	; not filled.
+	addi	r29,r29,#8
+	addi	r2,r2,#1
+	sle	r1,r2,r3
+	bnez	r1,L15
+	nop	; not filled.
+	addi	r29,r29,#-8
+	lhi	r8,((LC12)>>16)&0xffff
+	addui	r8,r8,(LC12)&0xffff
+	sw	(r29),r8
+	jal	_Printf
+	nop	; not filled.
+	sw	(r29),r5
+	jal	_file_close
+	nop	; not filled.
+	add	r4,r0,r1
+	lhi	r8,((LC6)>>16)&0xffff
+	addui	r8,r8,(LC6)&0xffff
+	sw	(r29),r8
+	sw	4(r29),r4
+	jal	_Printf
+	nop	; not filled.
+	lhi	r8,((LC13)>>16)&0xffff
+	addui	r8,r8,(LC13)&0xffff
+	sw	(r29),r8
+	jal	_Printf
+	nop	; not filled.
+	sw	(r29),r7
+	lhi	r1,((LC14)>>16)&0xffff
+	addui	r1,r1,(LC14)&0xffff
+	sw	4(r29),r1
+	jal	_file_open
+	nop	; not filled.
+	add	r4,r0,r1
+	lhi	r8,((LC15)>>16)&0xffff
+	addui	r8,r8,(LC15)&0xffff
+	sw	(r29),r8
+	sw	4(r29),r4
+	jal	_Printf
+	nop	; not filled.
+	add	r5,r0,r4
+	addi	r29,r29,#8
+	addi	r2,r30,#-4104
+	addi	r3,r30,#-772
+L20:
+	addi	r8,r0,(#0x7a)&0xff
+	sb	(r2),r8
+	addi	r2,r2,#1
+	sle	r1,r2,r3
+	bnez	r1,L20
+	nop	; not filled.
+	addi	r29,r29,#-16
+	sw	(r29),r5
+	addi	r1,r30,#-4104
+	sw	4(r29),r1
+	addi	r8,r0,#3333
+	sw	8(r29),r8
+	jal	_file_write
+	nop	; not filled.
+	add	r4,r0,r1
+	lhi	r8,((LC16)>>16)&0xffff
+	addui	r8,r8,(LC16)&0xffff
+	sw	(r29),r8
+	sw	4(r29),r4
+	jal	_Printf
+	nop	; not filled.
+	sw	(r29),r5
+	jal	_file_close
+	nop	; not filled.
+	add	r4,r0,r1
+	lhi	r8,((LC17)>>16)&0xffff
+	addui	r8,r8,(LC17)&0xffff
+	sw	(r29),r8
+	sw	4(r29),r4
+	jal	_Printf
+	nop	; not filled.
+	sw	(r29),r7
+	lhi	r1,((LC3)>>16)&0xffff
+	addui	r1,r1,(LC3)&0xffff
+	sw	4(r29),r1
+	jal	_file_open
+	nop	; not filled.
+	add	r4,r0,r1
+	lhi	r8,((LC18)>>16)&0xffff
+	addui	r8,r8,(LC18)&0xffff
+	sw	(r29),r8
+	sw	4(r29),r4
+	jal	_Printf
+	nop	; not filled.
+	add	r5,r0,r4
+	addi	r29,r29,#16
+	addi	r2,r30,#-8200
+	addi	r3,r30,#-4105
+L25:
+	addi	r8,r0,(#0x0)&0xff
+	sb	(r2),r8
+	addi	r2,r2,#1
+	sle	r1,r2,r3
+	bnez	r1,L25
+	nop	; not filled.
+	addi	r29,r29,#-16
+	sw	(r29),r5
+	addi	r2,r30,#-8200
+	sw	4(r29),r2
+	addi	r8,r0,#3333
+	sw	8(r29),r8
+	jal	_file_read
+	nop	; not filled.
+	add	r4,r0,r1
+	lhi	r8,((LC19)>>16)&0xffff
+	addui	r8,r8,(LC19)&0xffff
+	sw	(r29),r8
+	sw	4(r29),r4
+	jal	_Printf
+	nop	; not filled.
+	lhi	r8,((LC20)>>16)&0xffff
+	addui	r8,r8,(LC20)&0xffff
+	sw	(r29),r8
+	jal	_Printf
+	nop	; not filled.
+	addi	r29,r29,#16
+	addi	r3,r30,#-4868
+L30:
+	addi	r29,r29,#-8
+	lhi	r8,((LC11)>>16)&0xffff
+	addui	r8,r8,(LC11)&0xffff
+	sw	(r29),r8
+	lbu	r1,(r2)
+	sw	4(r29),r1
+	jal	_Printf
+	nop	; not filled.
+	addi	r29,r29,#8
+	addi	r2,r2,#1
+	sle	r1,r2,r3
+	bnez	r1,L30
+	nop	; not filled.
+	addi	r29,r29,#-8
+	lhi	r8,((LC12)>>16)&0xffff
+	addui	r8,r8,(LC12)&0xffff
+	sw	(r29),r8
+	jal	_Printf
+	nop	; not filled.
+	lhi	r8,((LC21)>>16)&0xffff
+	addui	r8,r8,(LC21)&0xffff
+	sw	(r29),r8
+	jal	_Printf
+	nop	; not filled.
+	addi	r29,r29,#8
+	addi	r2,r30,#-4104
+	addi	r3,r30,#-105
+L35:
+	addi	r8,r0,(#0x68)&0xff
+	sb	(r2),r8
+	addi	r2,r2,#1
+	sle	r1,r2,r3
+	bnez	r1,L35
+	nop	; not filled.
+	addi	r29,r29,#-16
+	sw	(r29),r5
+	addi	r1,r30,#-4104
+	sw	4(r29),r1
+	addi	r8,r0,#2000
+	sw	8(r29),r8
+	jal	_file_write
+	nop	; not filled.
+	add	r4,r0,r1
+	lhi	r8,((LC22)>>16)&0xffff
+	addui	r8,r8,(LC22)&0xffff
+	sw	(r29),r8
+	sw	4(r29),r4
+	jal	_Printf
+	nop	; not filled.
+	sw	(r29),r5
+	addi	r8,r0,#-2010
+	sw	4(r29),r8
+	addi	r8,r0,#3
+	sw	8(r29),r8
+	jal	_file_seek
+	nop	; not filled.
+	add	r4,r0,r1
+	lhi	r8,((LC23)>>16)&0xffff
+	addui	r8,r8,(LC23)&0xffff
+	sw	(r29),r8
+	sw	4(r29),r4
+	jal	_Printf
+	nop	; not filled.
+	addi	r29,r29,#16
+	addi	r2,r30,#-8200
+	addi	r3,r30,#-4105
+L40:
+	addi	r8,r0,(#0x0)&0xff
+	sb	(r2),r8
+	addi	r2,r2,#1
+	sle	r1,r2,r3
+	bnez	r1,L40
+	nop	; not filled.
+	addi	r29,r29,#-16
+	sw	(r29),r5
+	addi	r2,r30,#-8200
+	sw	4(r29),r2
+	addi	r8,r0,#2000
+	sw	8(r29),r8
+	jal	_file_read
+	nop	; not filled.
+	lhi	r8,((LC24)>>16)&0xffff
+	addui	r8,r8,(LC24)&0xffff
+	sw	(r29),r8
+	jal	_Printf
+	nop	; not filled.
+	addi	r29,r29,#16
+	addi	r3,r30,#-5201
+L45:
+	addi	r29,r29,#-8
+	lhi	r8,((LC11)>>16)&0xffff
+	addui	r8,r8,(LC11)&0xffff
+	sw	(r29),r8
+	lbu	r1,(r2)
+	sw	4(r29),r1
+	jal	_Printf
+	nop	; not filled.
+	addi	r29,r29,#8
+	addi	r2,r2,#1
+	sle	r1,r2,r3
+	bnez	r1,L45
+	nop	; not filled.
+	addi	r29,r29,#-8
+	lhi	r8,((LC12)>>16)&0xffff
+	addui	r8,r8,(LC12)&0xffff
+	sw	(r29),r8
+	jal	_Printf
+	nop	; not filled.
+	sw	(r29),r5
+	jal	_file_close
+	nop	; not filled.
+	add	r4,r0,r1
+	lhi	r8,((LC17)>>16)&0xffff
+	addui	r8,r8,(LC17)&0xffff
+	sw	(r29),r8
+	sw	4(r29),r4
+	jal	_Printf
+	nop	; not filled.
+	lhi	r8,((LC25)>>16)&0xffff
+	addui	r8,r8,(LC25)&0xffff
+	sw	(r29),r8
+	jal	_Printf
+	nop	; not filled.
+	sw	(r29),r7
+	jal	_file_delete
+	nop	; not filled.
+	add	r4,r0,r1
+	lhi	r8,((LC26)>>16)&0xffff
+	addui	r8,r8,(LC26)&0xffff
+	sw	(r29),r8
+	sw	4(r29),r4
+	jal	_Printf
+	nop	; not filled.
+	addi	r29,r29,#8
+	jal	_exit
+	nop
+.endproc _main
