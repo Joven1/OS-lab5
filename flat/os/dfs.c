@@ -19,6 +19,7 @@ static inline uint32 invert(uint32 n) { return n ^ negativeone; }
 // additional locks if it is really necessary.
 static lock_t fbv_lock;
 static lock_t inode_lock;
+static lock_t block_lock;
 
 // STUDENT: put your file system level functions below.
 // Some skeletons are provided. You can implement additional functions.
@@ -110,7 +111,7 @@ void DfsModuleInit() {
 	//run properly on multiple machines
 	fbv_lock = LockCreate();
 	inode_lock = LockCreate();
-	
+	block_lock = LockCreate();	
 	return;
 }
 
@@ -458,12 +459,12 @@ int DfsFreeBlock(uint32 blocknum)
 	uint32 fbv_index;
 	uint32 index_bit_position;
 	uint32 mask;
-	
+
 	if(LockHandleAcquire(fbv_lock) != SYNC_SUCCESS)
 	{
-		printf("Error: FBV Lock Unavailable\n");
+		printf("Error: FBV Lock Acquisition Failed\n");
 		return DFS_FAIL;
-	}
+	}	
 
 	//Get Index and Bit Position of Block Number	
 	fbv_index = blocknum/32; 
@@ -471,17 +472,15 @@ int DfsFreeBlock(uint32 blocknum)
 
 	mask = 0x1 << (31 - index_bit_position);
 		
-	//See if Bit is Set Already, if it is, return an error
 	if(block_allocated(blocknum))
 	{
 		fbv[fbv_index] = fbv[fbv_index] ^ mask; //UnSet bit	
-
 		if(LockHandleRelease(fbv_lock) != SYNC_SUCCESS)
 		{
 			printf("Error FBV Lock Release Failed\n");
 			return DFS_FAIL;
 		}
-		
+	
 		return DFS_SUCCESS;
 	}
 	else
@@ -518,6 +517,13 @@ int DfsReadBlock(uint32 blocknum, dfs_block *b) {
 		return DFS_FAIL;
 	}
 
+	//Get a block lock before reading a block
+	if(LockHandleAcquire(block_lock) != SYNC_SUCCESS)
+	{
+		printf("Error: Block Lock Acquisition Failed\n");
+		return DFS_FAIL;
+	}
+
 	//Check if the block has already been allocated
 	if(!block_allocated(blocknum))
 	{
@@ -525,6 +531,7 @@ int DfsReadBlock(uint32 blocknum, dfs_block *b) {
 		return DFS_FAIL;
 	}	
 
+	//Loop
 	for( i = 0; i < byte_ratio; i++)
 	{
 		//Zero out data
@@ -542,6 +549,12 @@ int DfsReadBlock(uint32 blocknum, dfs_block *b) {
 		bytes_written = bytes_written + diskblocksize;	
 	}
 
+	//Release block lock
+	if(LockHandleRelease(block_lock) != SYNC_SUCCESS)
+	{
+		printf("Error: Block Lock Release Failed!\n");
+		return DFS_FAIL;
+	}	
 	return bytes_written;
 }
 
@@ -564,6 +577,13 @@ int DfsWriteBlock(uint32 blocknum, dfs_block *b)
 	//First Check if File System is Valid
 	if(DfsCheckSystem() == DFS_FAIL)
 	{
+		return DFS_FAIL;
+	}
+
+	//Acquire Block Lock	
+	if(LockHandleAcquire(block_lock) != SYNC_SUCCESS)
+	{
+		printf("Error: Block Lock Acquisition Failed!\n");
 		return DFS_FAIL;
 	}
 
@@ -593,6 +613,12 @@ int DfsWriteBlock(uint32 blocknum, dfs_block *b)
 		bytes_written = bytes_written + diskblocksize;	
 	}
 
+	//Release block lock
+	if(LockHandleRelease(block_lock) != SYNC_SUCCESS)
+	{
+		printf("Error: Block Lock Release Failed!\n");
+		return DFS_FAIL;
+	}	
 	return bytes_written;
 }
 
@@ -733,8 +759,115 @@ uint32 DfsInodeOpen(char *filename) {
 
 int DfsInodeDelete(uint32 handle) {
 	uint32 i;
+	uint32 indirect_block_vector[sb.block_size/sizeof(uint32)]; //Vector to store indirect entries
+	dfs_block indirect_block; //Block to store indirect entries
 	
-	return DFS_FAIL;
+	//First Check if File System is Valid
+	if(DfsCheckSystem() == DFS_FAIL)
+	{
+		return DFS_FAIL;
+	}
+
+
+	//Second Acquire Inode Lock
+	if(LockHandleAcquire(inode_lock) != SYNC_SUCCESS)
+	{
+		printf("Error: Unable to Acquire Inode Lock\n");
+		return DFS_FAIL;
+	}
+
+	//First Check if inode is valid or not 
+	if(handle == DFS_FAIL)
+	{
+		//Release Inode Lock
+		if(LockHandleRelease(inode_lock) != SYNC_SUCCESS)
+		{
+			printf("Error: Unable to Release Inode Lock\n");
+			return DFS_FAIL;
+		}	
+
+		printf("Error: Inode %d is invalid!\n", DFS_FAIL);
+		return DFS_FAIL;	
+	}
+
+	//Check if inode has been freed or not 
+	if(inodes[handle].inuse == false)
+	{
+		//Release Inode Lock
+		if(LockHandleRelease(inode_lock) != SYNC_SUCCESS)
+		{
+			printf("Error: Unable to Release Inode Lock\n");
+			return DFS_FAIL;
+		}	
+
+		printf("Error: Inode has already been freed!\n");
+		return DFS_FAIL;
+	}
+	
+	//Free The Table containing first 10 entries
+	for(i = 0; i < DFS_VB_TRANSLATION_TABLE_SIZE; i++)
+	{
+		//No need to go further if page has not been allocated
+		if(inodes[handle].vb_translation_table[i] == 0)
+		{
+			break;
+		}
+		if(DfsFreeBlock(inodes[handle].vb_translation_table[i]) == DFS_FAIL)
+		{
+			return DFS_FAIL;
+		}
+		inodes[handle].vb_translation_table[i] = 0;
+	}
+
+	//Next free the indirect addressing block if necessary
+	if(inodes[handle].block_num_indirect_index != 0)
+	{
+		//Read in Block pointed by indirect index
+		if(DfsReadBlock(inodes[handle].block_num_indirect_index, &indirect_block) == DFS_FAIL)
+		{
+			return DFS_FAIL;
+		}
+		bcopy(indirect_block.data, (char *) indirect_block_vector, sb.block_size);
+	
+		//Free the entire indirect block vector
+		for(i = 0; i < sb.block_size/sizeof(uint32); i++)
+		{
+			if(indirect_block_vector[i] == 0)
+			{
+				continue;
+			}
+			
+			if(DfsFreeBlock(indirect_block_vector[i]) == DFS_FAIL)
+			{
+				return DFS_FAIL;
+			}
+			indirect_block_vector[i] = 0;	
+		}
+		//Copy Indirect vector back into block
+		bcopy((char *) indirect_block_vector, indirect_block.data, sb.block_size);
+		
+		//Write back into file system
+		if(DfsWriteBlock(inodes[handle].block_num_indirect_index, &indirect_block) == DFS_FAIL)
+		{
+			return DFS_FAIL;
+		}
+
+		inodes[handle].block_num_indirect_index = 0;
+	}	
+
+	//Set the rest of the values to default
+	inodes[handle].inuse = false;
+	inodes[handle].size = 0;
+	bzero(inodes[handle].filename, DFS_FILENAME_SIZE);
+		
+
+	//Release Inode Lock
+	if(LockHandleRelease(inode_lock) != SYNC_SUCCESS)
+	{
+		printf("Error: Unable to Release Inode Lock\n");
+		return DFS_FAIL;
+	}
+	return DFS_SUCCESS;
 }
 uint32 DfsInodeWriteReadBytesValidateInput(uint32 handle, int start_byte, int num_bytes)
 {
@@ -787,6 +920,19 @@ int DfsInodeReadBytes(uint32 handle, void *mem, int start_byte, int num_bytes) {
 	bool one_block = (starting_bytes + ending_bytes) > num_bytes; //Special Case: One block is written to
 	char * memory = (char *) mem;
 	
+	//First Check if File System is Valid
+	if(DfsCheckSystem() == DFS_FAIL)
+	{
+		return DFS_FAIL;
+	}
+
+	//Second Acquire Inode Lock
+	if(LockHandleAcquire(inode_lock) != SYNC_SUCCESS)
+	{
+		printf("Error: Unable to Acquire Inode Lock\n");
+		return DFS_FAIL;
+	}
+
 	//Case: Bytes to write is only one block
 	if(one_block)
 	{
@@ -900,6 +1046,12 @@ int DfsInodeReadBytes(uint32 handle, void *mem, int start_byte, int num_bytes) {
 		inodes[handle].size = start_byte + num_bytes;
 	}
 
+	//Release Inode Lock
+	if(LockHandleRelease(inode_lock) != SYNC_SUCCESS)
+	{
+		printf("Error: Unable to Release Inode Lock\n");
+		return DFS_FAIL;
+	}
 	//Return Bytes Written in operation
 	return bytes_read;
 }
@@ -927,7 +1079,19 @@ int DfsInodeWriteBytes(uint32 handle, void *mem, int start_byte, int num_bytes)
 	dfs_block read_block; //Data Block Read into initially
 	bool one_block = (starting_bytes + ending_bytes) > num_bytes; //Special Case: One block is written to
 
-	
+	//First Check if File System is Valid
+	if(DfsCheckSystem() == DFS_FAIL)
+	{
+		return DFS_FAIL;
+	}
+
+	//Second Acquire Inode Lock
+	if(LockHandleAcquire(inode_lock) != SYNC_SUCCESS)
+	{
+		printf("Error: Unable to Acquire Inode Lock\n");
+		return DFS_FAIL;
+	}
+
 	//Case: Bytes to write is only one block
 	if(one_block)
 	{
@@ -943,8 +1107,8 @@ int DfsInodeWriteBytes(uint32 handle, void *mem, int start_byte, int num_bytes)
 	//First Allocate Blocks
 	for(i = 0; i <= (start_byte + num_bytes)/sb.block_size; i++)
 	{
-		//Read in Blocks	
-		block_handle = DfsInodeTranslateVirtualToFilesys(handle, i);	
+		//Allocate Blocks	
+		block_handle = DfsInodeAllocateVirtualBlock(handle, i);	
 		//If Necessary, allocate new blocks
 		if(block_handle == 0)
 		{
@@ -1062,6 +1226,13 @@ int DfsInodeWriteBytes(uint32 handle, void *mem, int start_byte, int num_bytes)
 		inodes[handle].size = start_byte + num_bytes;
 	}
 
+	//Second Release Inode Lock
+	if(LockHandleRelease(inode_lock) != SYNC_SUCCESS)
+	{
+		printf("Error: Unable to Release Inode Lock\n");
+		return DFS_FAIL;
+	}
+
 
 	//Return Bytes Written in operation
 	return bytes_written;
@@ -1105,7 +1276,6 @@ uint32 DfsInodeAllocateVirtualBlock(uint32 handle, uint32 virtual_blocknum)
 		return DFS_FAIL;
 	}
 
-
 	if(virtual_blocknum < 10)
 	{
 
@@ -1116,16 +1286,13 @@ uint32 DfsInodeAllocateVirtualBlock(uint32 handle, uint32 virtual_blocknum)
 			return DFS_FAIL;
 		}	
 		inodes[handle].vb_translation_table[virtual_blocknum] = block_handle;
-		
 		return DFS_SUCCESS;	
 	}
-
 	if(virtual_blocknum >= 10)
 	{
 		//Check whether or not indirect block was allocated, if it's not write 
 		if(inodes[handle].block_num_indirect_index == 0)
 		{
-			
 			//Allocate a block
 			block_handle = DfsAllocateBlock();
 			if(block_handle  == DFS_FAIL)
