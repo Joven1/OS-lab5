@@ -54,7 +54,8 @@ void main (int argc, char *argv[])
 	/////////////test 5
 	Printf("\n\ntest5 integreated test\n");
 	retval = file_open(file2, "w");
-	Printf("open file - handle %d\n", retval);
+	Printf("FILE OPEN START\n\n");	
+Printf("open file - handle %d\n", retval);
 	handle = retval;
 	for (i=0; i<3333; i++) {
 		data[i] = 'z';
@@ -104,4 +105,6 @@ void main (int argc, char *argv[])
 	Printf("\n\ntest7\n");
 	retval = file_delete(file2);
 	Printf("called file_delete, return %d\n", retval);
+
+	retval = file_open(handle, "waasd");
 }

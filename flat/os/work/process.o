@@ -5489,6 +5489,9 @@ L236:
 	nop	; delay slot nop
 	addi	r29,r29,#8
 L237:
+	add	r2,r0,r29
+	jal	_FileModuleInit
+	nop	; delay slot nop
 	lw	r1,-148(r30)
 	snei	r2,r1,#0
 	beqz	r2,L238

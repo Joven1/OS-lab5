@@ -1,10 +1,10 @@
 ; Linked by DLX-LD.
-; MemSize 196608
-; Data size: 70956
-; Text size: 107032
+; MemSize 200704
+; Data size: 72356
+; Text size: 112264
 ; Stack size: 8192
 .text 0x1000
-.data 0x1c000
+.data 0x1d000
 ; Compiled by GCC
 .text
 .align 2
@@ -9944,6 +9944,9 @@ L236_LF3:
 	nop; delay slot nop
 	addi	r29,r29,#8
 L237_LF3:
+	add	r2,r0,r29
+	jal	_FileModuleInit
+	nop; delay slot nop
 	lw	r1,-148(r30)
 	snei	r2,r1,#0
 	beqz	r2,L238_LF3
@@ -26459,75 +26462,1501 @@ L11_LF11:
 	nop
 .endproc _RestoreIntrs
 .align 2
-.proc _FileOpen
-.global _FileOpen
-_FileOpen:
-;  Function 'FileOpen'; 0 bytes of locals, 0 regs to save.
+.proc _FileModuleInit
+.global _FileModuleInit
+_FileModuleInit:
+;  Function 'FileModuleInit'; 8 bytes of locals, 3 regs to save.
 	sw	-4(r29),r30; push fp
 	add	r30,r0,r29; fp = sp
 	sw	-8(r29),r31; push ret addr
-	subui	r29,r29,#8; alloc local storage
-	addi	r1,r0,#-1
-	j	L12_LF11
+	subui	r29,r29,#32; alloc local storage
+	sw	0(r29),r2
+	sw	4(r29),r3
+	sw	8(r29),r4
+	nop
+	addi	r1,r0,#0
+	sw	-12(r30),r1
+L13_LF11:
+	lw	r1,-12(r30)
+	slei	r2,r1,#14
+	bnez	r2,L16_LF11
 	nop; delay slot nop
+	j	L14_LF11
+	nop; delay slot nop
+L16_LF11:
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,-12(r30)
+	add	r4,r0,r2
+	slli	r3,r4,#0x3
+	add	r3,r3,r2
+	slli	r2,r3,#0x3
+	lhi	r3,((_files_LF11)>>16)&0xffff
+	addui	r3,r3,(_files_LF11)&0xffff
+	add	r2,r3,r2
+	sw	(r1),r2
+	addi	r2,r0,#44
+	sw	4(r1),r2
+	jal	_bzero
+	nop; delay slot nop
+	addi	r29,r29,#8
+	lhi	r1,((_files_LF11)>>16)&0xffff
+	addui	r1,r1,(_files_LF11)&0xffff
+	lw	r2,-12(r30)
+	add	r4,r0,r2
+	slli	r3,r4,#0x3
+	add	r3,r3,r2
+	slli	r2,r3,#0x3
+	add	r1,r1,r2
+	addi	r2,r0,#0
+	sw	44(r1),r2
+	lhi	r1,((_files_LF11)>>16)&0xffff
+	addui	r1,r1,(_files_LF11)&0xffff
+	lw	r2,-12(r30)
+	add	r4,r0,r2
+	slli	r3,r4,#0x3
+	add	r3,r3,r2
+	slli	r2,r3,#0x3
+	add	r1,r1,r2
+	addi	r2,r0,#0
+	sw	48(r1),r2
+	lhi	r1,((_files_LF11)>>16)&0xffff
+	addui	r1,r1,(_files_LF11)&0xffff
+	lw	r2,-12(r30)
+	add	r4,r0,r2
+	slli	r3,r4,#0x3
+	add	r3,r3,r2
+	slli	r2,r3,#0x3
+	add	r1,r1,r2
+	addi	r2,r0,#0
+	sw	52(r1),r2
+	lhi	r1,((_files_LF11)>>16)&0xffff
+	addui	r1,r1,(_files_LF11)&0xffff
+	lw	r2,-12(r30)
+	add	r4,r0,r2
+	slli	r3,r4,#0x3
+	add	r3,r3,r2
+	slli	r2,r3,#0x3
+	add	r1,r1,r2
+	addi	r2,r0,#3
+	sw	60(r1),r2
+	lhi	r1,((_files_LF11)>>16)&0xffff
+	addui	r1,r1,(_files_LF11)&0xffff
+	lw	r2,-12(r30)
+	add	r4,r0,r2
+	slli	r3,r4,#0x3
+	add	r3,r3,r2
+	slli	r2,r3,#0x3
+	add	r1,r1,r2
+	addi	r2,r0,(#0x0)&0xff
+	sb	64(r1),r2
+	lhi	r1,((_files_LF11)>>16)&0xffff
+	addui	r1,r1,(_files_LF11)&0xffff
+	lw	r2,-12(r30)
+	add	r4,r0,r2
+	slli	r3,r4,#0x3
+	add	r3,r3,r2
+	slli	r2,r3,#0x3
+	add	r1,r1,r2
+	addi	r2,r0,#-1
+	sw	68(r1),r2
+L15_LF11:
+	lw	r2,-12(r30)
+	addi	r1,r2,#1
+	add	r2,r0,r1
+	sw	-12(r30),r2
+	j	L13_LF11
+	nop; delay slot nop
+L14_LF11:
+	add	r2,r0,r29
+	jal	_LockCreate
+	nop; delay slot nop
+	lhi	r2,((_file_lock_LF11)>>16)&0xffff
+	addui	r2,r2,(_file_lock_LF11)&0xffff
+	sw	(r2),r1
 L12_LF11:
+	lw	r2,0(r29)
+	lw	r3,4(r29)
+	lw	r4,8(r29)
+	lw	r31,-8(r30)
+	add	r29,r0,r30
+	lw	r30,-4(r30)
+	jr	r31
+	nop
+.endproc _FileModuleInit
+.data
+.align 2
+LC0_LF11:
+.ascii "%d\n\000"
+.text
+.align 2
+.proc _isOpen
+.global _isOpen
+_isOpen:
+;  Function 'isOpen'; 8 bytes of locals, 1 regs to save.
+	sw	-4(r29),r30; push fp
+	add	r30,r0,r29; fp = sp
+	sw	-8(r29),r31; push ret addr
+	subui	r29,r29,#24; alloc local storage
+	sw	0(r29),r2
+	nop
+	addi	r1,r0,#0
+	sw	-12(r30),r1
+L18_LF11:
+	lw	r1,-12(r30)
+	sleui	r2,r1,#191
+	bnez	r2,L21_LF11
+	nop; delay slot nop
+	j	L19_LF11
+	nop; delay slot nop
+L21_LF11:
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((LC0_LF11)>>16)&0xffff
+	addui	r2,r2,(LC0_LF11)&0xffff
+	sw	(r1),r2
+	lw	r2,-12(r30)
+	sw	4(r1),r2
+	jal	_printf
+	nop; delay slot nop
+	addi	r29,r29,#8
+L20_LF11:
+	lw	r2,-12(r30)
+	addi	r1,r2,#1
+	add	r2,r0,r1
+	sw	-12(r30),r2
+	j	L18_LF11
+	nop; delay slot nop
+L19_LF11:
+	addi	r1,r0,#1
+	j	L17_LF11
+	nop; delay slot nop
+L17_LF11:
+	lw	r2,0(r29)
+	lw	r31,-8(r30)
+	add	r29,r0,r30
+	lw	r30,-4(r30)
+	jr	r31
+	nop
+.endproc _isOpen
+.align 2
+.proc _getFileMode
+.global _getFileMode
+_getFileMode:
+;  Function 'getFileMode'; 0 bytes of locals, 1 regs to save.
+	sw	-4(r29),r30; push fp
+	add	r30,r0,r29; fp = sp
+	sw	-8(r29),r31; push ret addr
+	subui	r29,r29,#16; alloc local storage
+	sw	0(r29),r2
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,(r30)
+	sw	(r1),r2
+	jal	_dstrlen
+	nop; delay slot nop
+	addi	r29,r29,#8
+	sgti	r2,r1,#2
+	beqz	r2,L23_LF11
+	nop; delay slot nop
+	addi	r1,r0,#3
+	j	L22_LF11
+	nop; delay slot nop
+L23_LF11:
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,(r30)
+	sw	(r1),r2
+	jal	_dstrlen
+	nop; delay slot nop
+	addi	r29,r29,#8
+	seqi	r2,r1,#1
+	beqz	r2,L24_LF11
+	nop; delay slot nop
+	lw	r1,(r30)
+	lbu	r2,(r1)
+	seqi	r1,r2,#114
+	beqz	r1,L25_LF11
+	nop; delay slot nop
+	addi	r1,r0,#0
+	j	L22_LF11
+	nop; delay slot nop
+	j	L26_LF11
+	nop; delay slot nop
+L25_LF11:
+	lw	r1,(r30)
+	lbu	r2,(r1)
+	seqi	r1,r2,#119
+	beqz	r1,L24_LF11
+	nop; delay slot nop
+	addi	r1,r0,#1
+	j	L22_LF11
+	nop; delay slot nop
+L27_LF11:
+L26_LF11:
+L24_LF11:
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,(r30)
+	sw	(r1),r2
+	jal	_dstrlen
+	nop; delay slot nop
+	addi	r29,r29,#8
+	seqi	r2,r1,#2
+	beqz	r2,L28_LF11
+	nop; delay slot nop
+	lw	r1,(r30)
+	lbu	r2,(r1)
+	seqi	r1,r2,#114
+	beqz	r1,L28_LF11
+	nop; delay slot nop
+	lw	r2,(r30)
+	addi	r1,r2,#1
+	lbu	r2,(r1)
+	seqi	r1,r2,#119
+	beqz	r1,L28_LF11
+	nop; delay slot nop
+	addi	r1,r0,#2
+	j	L22_LF11
+	nop; delay slot nop
+L29_LF11:
+L28_LF11:
+	addi	r1,r0,#3
+	j	L22_LF11
+	nop; delay slot nop
+L22_LF11:
+	lw	r2,0(r29)
+	lw	r31,-8(r30)
+	add	r29,r0,r30
+	lw	r30,-4(r30)
+	jr	r31
+	nop
+.endproc _getFileMode
+.data
+.align 2
+LC1_LF11:
+.ascii "Error: File Lock Acquisition failed!\n\000"
+.align 2
+LC2_LF11:
+.ascii "Error: Unknown file mode %s\n\000"
+.align 2
+LC3_LF11:
+.ascii "Error: File Lock Release Failed!\n\000"
+.align 2
+LC4_LF11:
+.ascii "I AM THE RUNNER\n\n\n\000"
+.align 2
+LC5_LF11:
+.ascii "File handle is %d\n\000"
+.align 2
+LC6_LF11:
+.ascii "File Ownder is %d\n\000"
+.text
+.align 2
+.proc _FileOpen
+.global _FileOpen
+_FileOpen:
+;  Function 'FileOpen'; 16 bytes of locals, 5 regs to save.
+	sw	-4(r29),r30; push fp
+	add	r30,r0,r29; fp = sp
+	sw	-8(r29),r31; push ret addr
+	subui	r29,r29,#48; alloc local storage
+	sw	0(r29),r2
+	sw	4(r29),r3
+	sw	8(r29),r4
+	sw	12(r29),r5
+	sw	16(r29),r6
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,4(r30)
+	sw	(r1),r2
+	jal	_getFileMode
+	nop; delay slot nop
+	addi	r29,r29,#8
+	sw	-16(r30),r1
+	addi	r1,r0,#-1
+	sw	-20(r30),r1
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((_file_lock_LF11)>>16)&0xffff
+	addui	r2,r2,(_file_lock_LF11)&0xffff
+	lw	r3,(r2)
+	sw	(r1),r3
+	jal	_LockHandleAcquire
+	nop; delay slot nop
+	addi	r29,r29,#8
+	snei	r2,r1,#1
+	beqz	r2,L31_LF11
+	nop; delay slot nop
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((LC1_LF11)>>16)&0xffff
+	addui	r2,r2,(LC1_LF11)&0xffff
+	sw	(r1),r2
+	jal	_printf
+	nop; delay slot nop
+	addi	r29,r29,#8
+	addi	r1,r0,#-1
+	j	L30_LF11
+	nop; delay slot nop
+L31_LF11:
+	lw	r1,-16(r30)
+	seqi	r2,r1,#3
+	beqz	r2,L32_LF11
+	nop; delay slot nop
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((LC2_LF11)>>16)&0xffff
+	addui	r2,r2,(LC2_LF11)&0xffff
+	sw	(r1),r2
+	lw	r2,4(r30)
+	sw	4(r1),r2
+	jal	_printf
+	nop; delay slot nop
+	addi	r29,r29,#8
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((_file_lock_LF11)>>16)&0xffff
+	addui	r2,r2,(_file_lock_LF11)&0xffff
+	lw	r3,(r2)
+	sw	(r1),r3
+	jal	_LockHandleRelease
+	nop; delay slot nop
+	addi	r29,r29,#8
+	snei	r2,r1,#1
+	beqz	r2,L33_LF11
+	nop; delay slot nop
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((LC3_LF11)>>16)&0xffff
+	addui	r2,r2,(LC3_LF11)&0xffff
+	sw	(r1),r2
+	jal	_printf
+	nop; delay slot nop
+	addi	r29,r29,#8
+	addi	r1,r0,#-1
+	j	L30_LF11
+	nop; delay slot nop
+L33_LF11:
+	addi	r1,r0,#-1
+	j	L30_LF11
+	nop; delay slot nop
+L32_LF11:
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,(r30)
+	sw	(r1),r2
+	jal	_DfsInodeFilenameExists
+	nop; delay slot nop
+	addi	r29,r29,#8
+	sw	-12(r30),r1
+	lw	r1,-12(r30)
+	snei	r2,r1,#-1
+	beqz	r2,L34_LF11
+	nop; delay slot nop
+	addi	r1,r0,#0
+	sw	-24(r30),r1
+L35_LF11:
+	lw	r1,-24(r30)
+	sleui	r2,r1,#14
+	bnez	r2,L38_LF11
+	nop; delay slot nop
+	j	L36_LF11
+	nop; delay slot nop
+L38_LF11:
+	lw	r1,-24(r30)
+	add	r3,r0,r1
+	slli	r2,r3,#0x3
+	add	r2,r2,r1
+	slli	r1,r2,#0x3
+	lhi	r6,((_files_LF11)>>16)&0xffff
+	addui	r6,r6,(_files_LF11)&0xffff
+	add	r2,r1,r6
+	lw	r1,44(r2)
+	lw	r2,-12(r30)
+	seq	r1,r1,r2
+	beqz	r1,L37_LF11
+	nop; delay slot nop
+	lw	r1,-24(r30)
+	sw	-20(r30),r1
+	j	L36_LF11
+	nop; delay slot nop
+L39_LF11:
+L37_LF11:
+	lw	r2,-24(r30)
+	addi	r1,r2,#1
+	add	r2,r0,r1
+	sw	-24(r30),r2
+	j	L35_LF11
+	nop; delay slot nop
+L36_LF11:
+	lw	r1,-20(r30)
+	snei	r2,r1,#-1
+	beqz	r2,L34_LF11
+	nop; delay slot nop
+	add	r2,r0,r29
+	jal	_GetCurrentPid
+	nop; delay slot nop
+	lw	r2,-20(r30)
+	add	r4,r0,r2
+	slli	r3,r4,#0x3
+	add	r3,r3,r2
+	slli	r2,r3,#0x3
+	lhi	r6,((_files_LF11)>>16)&0xffff
+	addui	r6,r6,(_files_LF11)&0xffff
+	add	r3,r2,r6
+	lw	r2,68(r3)
+	sne	r1,r1,r2
+	beqz	r1,L34_LF11
+	nop; delay slot nop
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((LC4_LF11)>>16)&0xffff
+	addui	r2,r2,(LC4_LF11)&0xffff
+	sw	(r1),r2
+	jal	_printf
+	nop; delay slot nop
+	addi	r29,r29,#8
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((_file_lock_LF11)>>16)&0xffff
+	addui	r2,r2,(_file_lock_LF11)&0xffff
+	lw	r3,(r2)
+	sw	(r1),r3
+	jal	_LockHandleRelease
+	nop; delay slot nop
+	addi	r29,r29,#8
+	snei	r2,r1,#1
+	beqz	r2,L41_LF11
+	nop; delay slot nop
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((LC3_LF11)>>16)&0xffff
+	addui	r2,r2,(LC3_LF11)&0xffff
+	sw	(r1),r2
+	jal	_printf
+	nop; delay slot nop
+	addi	r29,r29,#8
+	addi	r1,r0,#-1
+	j	L30_LF11
+	nop; delay slot nop
+L41_LF11:
+	addi	r1,r0,#-1
+	j	L30_LF11
+	nop; delay slot nop
+L40_LF11:
+L34_LF11:
+	lw	r1,-16(r30)
+	snei	r2,r1,#0
+	beqz	r2,L42_LF11
+	nop; delay slot nop
+	lw	r1,-12(r30)
+	snei	r2,r1,#-1
+	beqz	r2,L43_LF11
+	nop; delay slot nop
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,-12(r30)
+	sw	(r1),r2
+	jal	_DfsInodeDelete
+	nop; delay slot nop
+	addi	r29,r29,#8
+	snei	r2,r1,#1
+	beqz	r2,L43_LF11
+	nop; delay slot nop
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((_file_lock_LF11)>>16)&0xffff
+	addui	r2,r2,(_file_lock_LF11)&0xffff
+	lw	r3,(r2)
+	sw	(r1),r3
+	jal	_LockHandleRelease
+	nop; delay slot nop
+	addi	r29,r29,#8
+	snei	r2,r1,#1
+	beqz	r2,L45_LF11
+	nop; delay slot nop
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((LC3_LF11)>>16)&0xffff
+	addui	r2,r2,(LC3_LF11)&0xffff
+	sw	(r1),r2
+	jal	_printf
+	nop; delay slot nop
+	addi	r29,r29,#8
+	addi	r1,r0,#-1
+	j	L30_LF11
+	nop; delay slot nop
+L45_LF11:
+	addi	r1,r0,#-1
+	j	L30_LF11
+	nop; delay slot nop
+L44_LF11:
+L43_LF11:
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,(r30)
+	sw	(r1),r2
+	jal	_DfsInodeOpen
+	nop; delay slot nop
+	addi	r29,r29,#8
+	sw	-12(r30),r1
+	lw	r1,-12(r30)
+	seqi	r2,r1,#-1
+	beqz	r2,L42_LF11
+	nop; delay slot nop
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((_file_lock_LF11)>>16)&0xffff
+	addui	r2,r2,(_file_lock_LF11)&0xffff
+	lw	r3,(r2)
+	sw	(r1),r3
+	jal	_LockHandleRelease
+	nop; delay slot nop
+	addi	r29,r29,#8
+	snei	r2,r1,#1
+	beqz	r2,L47_LF11
+	nop; delay slot nop
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((LC3_LF11)>>16)&0xffff
+	addui	r2,r2,(LC3_LF11)&0xffff
+	sw	(r1),r2
+	jal	_printf
+	nop; delay slot nop
+	addi	r29,r29,#8
+	addi	r1,r0,#-1
+	j	L30_LF11
+	nop; delay slot nop
+L47_LF11:
+	addi	r1,r0,#-1
+	j	L30_LF11
+	nop; delay slot nop
+L46_LF11:
+L42_LF11:
+	lw	r1,-20(r30)
+	seqi	r2,r1,#-1
+	beqz	r2,L48_LF11
+	nop; delay slot nop
+	addi	r1,r0,#0
+	sw	-24(r30),r1
+L49_LF11:
+	lw	r1,-24(r30)
+	sleui	r2,r1,#14
+	bnez	r2,L52_LF11
+	nop; delay slot nop
+	j	L48_LF11
+	nop; delay slot nop
+L52_LF11:
+	lw	r1,-24(r30)
+	add	r3,r0,r1
+	slli	r2,r3,#0x3
+	add	r2,r2,r1
+	slli	r1,r2,#0x3
+	lhi	r6,((_files_LF11)>>16)&0xffff
+	addui	r6,r6,(_files_LF11)&0xffff
+	add	r2,r1,r6
+	lw	r1,44(r2)
+	snei	r2,r1,#0
+	bnez	r2,L51_LF11
+	nop; delay slot nop
+	lw	r1,-24(r30)
+	sw	-20(r30),r1
+L53_LF11:
+L51_LF11:
+	lw	r2,-24(r30)
+	addi	r1,r2,#1
+	add	r2,r0,r1
+	sw	-24(r30),r2
+	j	L49_LF11
+	nop; delay slot nop
+L50_LF11:
+L48_LF11:
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,(r30)
+	sw	(r1),r2
+	jal	_dstrlen
+	nop; delay slot nop
+	addi	r29,r29,#8
+	addi	r29,r29,#-16
+	add	r2,r0,r29
+	lw	r3,-20(r30)
+	add	r5,r0,r3
+	slli	r4,r5,#0x3
+	add	r4,r4,r3
+	slli	r3,r4,#0x3
+	lhi	r4,((_files_LF11)>>16)&0xffff
+	addui	r4,r4,(_files_LF11)&0xffff
+	add	r3,r4,r3
+	sw	(r2),r3
+	lw	r3,(r30)
+	sw	4(r2),r3
+	sw	8(r2),r1
+	jal	_dstrncpy
+	nop; delay slot nop
+	addi	r29,r29,#16
+	lhi	r1,((_files_LF11)>>16)&0xffff
+	addui	r1,r1,(_files_LF11)&0xffff
+	lw	r2,-20(r30)
+	add	r4,r0,r2
+	slli	r3,r4,#0x3
+	add	r3,r3,r2
+	slli	r2,r3,#0x3
+	add	r1,r1,r2
+	lw	r2,-12(r30)
+	sw	44(r1),r2
+	add	r2,r0,r29
+	jal	_GetCurrentPid
+	nop; delay slot nop
+	lhi	r2,((_files_LF11)>>16)&0xffff
+	addui	r2,r2,(_files_LF11)&0xffff
+	lw	r3,-20(r30)
+	add	r5,r0,r3
+	slli	r4,r5,#0x3
+	add	r4,r4,r3
+	slli	r3,r4,#0x3
+	add	r2,r2,r3
+	sw	68(r2),r1
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((LC5_LF11)>>16)&0xffff
+	addui	r2,r2,(LC5_LF11)&0xffff
+	sw	(r1),r2
+	lw	r2,-20(r30)
+	sw	4(r1),r2
+	jal	_printf
+	nop; delay slot nop
+	addi	r29,r29,#8
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((LC6_LF11)>>16)&0xffff
+	addui	r2,r2,(LC6_LF11)&0xffff
+	sw	(r1),r2
+	lw	r2,-20(r30)
+	add	r4,r0,r2
+	slli	r3,r4,#0x3
+	add	r3,r3,r2
+	slli	r2,r3,#0x3
+	lhi	r6,((_files_LF11)>>16)&0xffff
+	addui	r6,r6,(_files_LF11)&0xffff
+	add	r3,r2,r6
+	lw	r2,68(r3)
+	sw	4(r1),r2
+	jal	_printf
+	nop; delay slot nop
+	addi	r29,r29,#8
+	lhi	r1,((_files_LF11)>>16)&0xffff
+	addui	r1,r1,(_files_LF11)&0xffff
+	lw	r2,-20(r30)
+	add	r4,r0,r2
+	slli	r3,r4,#0x3
+	add	r3,r3,r2
+	slli	r2,r3,#0x3
+	add	r1,r1,r2
+	lw	r2,-16(r30)
+	sw	60(r1),r2
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((_file_lock_LF11)>>16)&0xffff
+	addui	r2,r2,(_file_lock_LF11)&0xffff
+	lw	r3,(r2)
+	sw	(r1),r3
+	jal	_LockHandleRelease
+	nop; delay slot nop
+	addi	r29,r29,#8
+	snei	r2,r1,#1
+	beqz	r2,L54_LF11
+	nop; delay slot nop
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((LC3_LF11)>>16)&0xffff
+	addui	r2,r2,(LC3_LF11)&0xffff
+	sw	(r1),r2
+	jal	_printf
+	nop; delay slot nop
+	addi	r29,r29,#8
+	addi	r1,r0,#-1
+	j	L30_LF11
+	nop; delay slot nop
+L54_LF11:
+	lw	r1,-20(r30)
+	j	L30_LF11
+	nop; delay slot nop
+L30_LF11:
+	lw	r2,0(r29)
+	lw	r3,4(r29)
+	lw	r4,8(r29)
+	lw	r5,12(r29)
+	lw	r6,16(r29)
 	lw	r31,-8(r30)
 	add	r29,r0,r30
 	lw	r30,-4(r30)
 	jr	r31
 	nop
 .endproc _FileOpen
+.data
+.align 2
+LC7_LF11:
+.ascii "Error: Process (%d) has no ownership!\n\000"
+.text
 .align 2
 .proc _FileClose
 .global _FileClose
 _FileClose:
-;  Function 'FileClose'; 0 bytes of locals, 0 regs to save.
+;  Function 'FileClose'; 0 bytes of locals, 4 regs to save.
 	sw	-4(r29),r30; push fp
 	add	r30,r0,r29; fp = sp
 	sw	-8(r29),r31; push ret addr
-	subui	r29,r29,#8; alloc local storage
-	addi	r1,r0,#-1
-	j	L13_LF11
+	subui	r29,r29,#24; alloc local storage
+	sw	0(r29),r2
+	sw	4(r29),r3
+	sw	8(r29),r4
+	sw	12(r29),r5
+	add	r2,r0,r29
+	jal	_GetCurrentPid
 	nop; delay slot nop
-L13_LF11:
+	lw	r2,(r30)
+	add	r4,r0,r2
+	slli	r3,r4,#0x3
+	add	r3,r3,r2
+	slli	r2,r3,#0x3
+	lhi	r5,((_files_LF11)>>16)&0xffff
+	addui	r5,r5,(_files_LF11)&0xffff
+	add	r3,r2,r5
+	lw	r2,68(r3)
+	sne	r1,r1,r2
+	beqz	r1,L56_LF11
+	nop; delay slot nop
+	add	r2,r0,r29
+	jal	_GetCurrentPid
+	nop; delay slot nop
+	addi	r29,r29,#-8
+	add	r2,r0,r29
+	lhi	r3,((LC7_LF11)>>16)&0xffff
+	addui	r3,r3,(LC7_LF11)&0xffff
+	sw	(r2),r3
+	sw	4(r2),r1
+	jal	_printf
+	nop; delay slot nop
+	addi	r29,r29,#8
+	addi	r1,r0,#-1
+	j	L55_LF11
+	nop; delay slot nop
+L56_LF11:
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((_file_lock_LF11)>>16)&0xffff
+	addui	r2,r2,(_file_lock_LF11)&0xffff
+	lw	r3,(r2)
+	sw	(r1),r3
+	jal	_LockHandleAcquire
+	nop; delay slot nop
+	addi	r29,r29,#8
+	snei	r2,r1,#1
+	beqz	r2,L57_LF11
+	nop; delay slot nop
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((LC1_LF11)>>16)&0xffff
+	addui	r2,r2,(LC1_LF11)&0xffff
+	sw	(r1),r2
+	jal	_printf
+	nop; delay slot nop
+	addi	r29,r29,#8
+	addi	r1,r0,#-1
+	j	L55_LF11
+	nop; delay slot nop
+L57_LF11:
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,(r30)
+	add	r4,r0,r2
+	slli	r3,r4,#0x3
+	add	r3,r3,r2
+	slli	r2,r3,#0x3
+	lhi	r3,((_files_LF11)>>16)&0xffff
+	addui	r3,r3,(_files_LF11)&0xffff
+	add	r2,r3,r2
+	sw	(r1),r2
+	addi	r2,r0,#44
+	sw	4(r1),r2
+	jal	_bzero
+	nop; delay slot nop
+	addi	r29,r29,#8
+	lhi	r1,((_files_LF11)>>16)&0xffff
+	addui	r1,r1,(_files_LF11)&0xffff
+	lw	r2,(r30)
+	add	r4,r0,r2
+	slli	r3,r4,#0x3
+	add	r3,r3,r2
+	slli	r2,r3,#0x3
+	add	r1,r1,r2
+	addi	r2,r0,#0
+	sw	44(r1),r2
+	lhi	r1,((_files_LF11)>>16)&0xffff
+	addui	r1,r1,(_files_LF11)&0xffff
+	lw	r2,(r30)
+	add	r4,r0,r2
+	slli	r3,r4,#0x3
+	add	r3,r3,r2
+	slli	r2,r3,#0x3
+	add	r1,r1,r2
+	addi	r2,r0,#0
+	sw	48(r1),r2
+	lhi	r1,((_files_LF11)>>16)&0xffff
+	addui	r1,r1,(_files_LF11)&0xffff
+	lw	r2,(r30)
+	add	r4,r0,r2
+	slli	r3,r4,#0x3
+	add	r3,r3,r2
+	slli	r2,r3,#0x3
+	add	r1,r1,r2
+	addi	r2,r0,#0
+	sw	52(r1),r2
+	lhi	r1,((_files_LF11)>>16)&0xffff
+	addui	r1,r1,(_files_LF11)&0xffff
+	lw	r2,(r30)
+	add	r4,r0,r2
+	slli	r3,r4,#0x3
+	add	r3,r3,r2
+	slli	r2,r3,#0x3
+	add	r1,r1,r2
+	addi	r2,r0,#3
+	sw	60(r1),r2
+	lhi	r1,((_files_LF11)>>16)&0xffff
+	addui	r1,r1,(_files_LF11)&0xffff
+	lw	r2,(r30)
+	add	r4,r0,r2
+	slli	r3,r4,#0x3
+	add	r3,r3,r2
+	slli	r2,r3,#0x3
+	add	r1,r1,r2
+	addi	r2,r0,(#0x0)&0xff
+	sb	64(r1),r2
+	lhi	r1,((_files_LF11)>>16)&0xffff
+	addui	r1,r1,(_files_LF11)&0xffff
+	lw	r2,(r30)
+	add	r4,r0,r2
+	slli	r3,r4,#0x3
+	add	r3,r3,r2
+	slli	r2,r3,#0x3
+	add	r1,r1,r2
+	addi	r2,r0,#-1
+	sw	68(r1),r2
+	lhi	r1,((_files_LF11)>>16)&0xffff
+	addui	r1,r1,(_files_LF11)&0xffff
+	lw	r2,(r30)
+	add	r4,r0,r2
+	slli	r3,r4,#0x3
+	add	r3,r3,r2
+	slli	r2,r3,#0x3
+	add	r1,r1,r2
+	addi	r2,r0,#0
+	sw	56(r1),r2
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((_file_lock_LF11)>>16)&0xffff
+	addui	r2,r2,(_file_lock_LF11)&0xffff
+	lw	r3,(r2)
+	sw	(r1),r3
+	jal	_LockHandleRelease
+	nop; delay slot nop
+	addi	r29,r29,#8
+	snei	r2,r1,#1
+	beqz	r2,L58_LF11
+	nop; delay slot nop
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((LC3_LF11)>>16)&0xffff
+	addui	r2,r2,(LC3_LF11)&0xffff
+	sw	(r1),r2
+	jal	_printf
+	nop; delay slot nop
+	addi	r29,r29,#8
+	addi	r1,r0,#-1
+	j	L55_LF11
+	nop; delay slot nop
+L58_LF11:
+	addi	r1,r0,#1
+	j	L55_LF11
+	nop; delay slot nop
+L55_LF11:
+	lw	r2,0(r29)
+	lw	r3,4(r29)
+	lw	r4,8(r29)
+	lw	r5,12(r29)
 	lw	r31,-8(r30)
 	add	r29,r0,r30
 	lw	r30,-4(r30)
 	jr	r31
 	nop
 .endproc _FileClose
+.data
+.align 2
+LC8_LF11:
+.ascii "Error: Too Many Bytes (%d), max is %d\n\000"
+.align 2
+LC9_LF11:
+.ascii "Error: Read Operation Failed!\n\000"
+.text
 .align 2
 .proc _FileRead
 .global _FileRead
 _FileRead:
-;  Function 'FileRead'; 0 bytes of locals, 0 regs to save.
+;  Function 'FileRead'; 8 bytes of locals, 5 regs to save.
 	sw	-4(r29),r30; push fp
 	add	r30,r0,r29; fp = sp
 	sw	-8(r29),r31; push ret addr
-	subui	r29,r29,#8; alloc local storage
-	addi	r1,r0,#-1
-	j	L14_LF11
+	subui	r29,r29,#40; alloc local storage
+	sw	0(r29),r2
+	sw	4(r29),r3
+	sw	8(r29),r4
+	sw	12(r29),r5
+	sw	16(r29),r6
+	add	r2,r0,r29
+	jal	_GetCurrentPid
 	nop; delay slot nop
-L14_LF11:
+	lw	r2,(r30)
+	add	r4,r0,r2
+	slli	r3,r4,#0x3
+	add	r3,r3,r2
+	slli	r2,r3,#0x3
+	lhi	r6,((_files_LF11)>>16)&0xffff
+	addui	r6,r6,(_files_LF11)&0xffff
+	add	r3,r2,r6
+	lw	r2,68(r3)
+	sne	r1,r1,r2
+	beqz	r1,L60_LF11
+	nop; delay slot nop
+	add	r2,r0,r29
+	jal	_GetCurrentPid
+	nop; delay slot nop
+	addi	r29,r29,#-8
+	add	r2,r0,r29
+	lhi	r3,((LC7_LF11)>>16)&0xffff
+	addui	r3,r3,(LC7_LF11)&0xffff
+	sw	(r2),r3
+	sw	4(r2),r1
+	jal	_printf
+	nop; delay slot nop
+	addi	r29,r29,#8
+	addi	r1,r0,#-1
+	j	L59_LF11
+	nop; delay slot nop
+L60_LF11:
+	lw	r1,8(r30)
+	sgti	r2,r1,#4096
+	beqz	r2,L61_LF11
+	nop; delay slot nop
+	addi	r29,r29,#-16
+	add	r1,r0,r29
+	lhi	r2,((LC8_LF11)>>16)&0xffff
+	addui	r2,r2,(LC8_LF11)&0xffff
+	sw	(r1),r2
+	lw	r2,8(r30)
+	sw	4(r1),r2
+	addi	r2,r0,#4096
+	sw	8(r1),r2
+	jal	_printf
+	nop; delay slot nop
+	addi	r29,r29,#16
+	addi	r1,r0,#-1
+	j	L59_LF11
+	nop; delay slot nop
+L61_LF11:
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((_file_lock_LF11)>>16)&0xffff
+	addui	r2,r2,(_file_lock_LF11)&0xffff
+	lw	r3,(r2)
+	sw	(r1),r3
+	jal	_LockHandleAcquire
+	nop; delay slot nop
+	addi	r29,r29,#8
+	snei	r2,r1,#1
+	beqz	r2,L62_LF11
+	nop; delay slot nop
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((LC1_LF11)>>16)&0xffff
+	addui	r2,r2,(LC1_LF11)&0xffff
+	sw	(r1),r2
+	jal	_printf
+	nop; delay slot nop
+	addi	r29,r29,#8
+	addi	r1,r0,#-1
+	j	L59_LF11
+	nop; delay slot nop
+L62_LF11:
+	lw	r1,(r30)
+	add	r3,r0,r1
+	slli	r2,r3,#0x3
+	add	r2,r2,r1
+	slli	r1,r2,#0x3
+	lhi	r6,((_files_LF11)>>16)&0xffff
+	addui	r6,r6,(_files_LF11)&0xffff
+	add	r2,r1,r6
+	lw	r1,48(r2)
+	lw	r3,8(r30)
+	add	r2,r1,r3
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r3,(r30)
+	add	r5,r0,r3
+	slli	r4,r5,#0x3
+	add	r4,r4,r3
+	slli	r3,r4,#0x3
+	lhi	r6,((_files_LF11)>>16)&0xffff
+	addui	r6,r6,(_files_LF11)&0xffff
+	add	r4,r3,r6
+	lw	r3,44(r4)
+	sw	(r1),r3
+	jal	_DfsInodeFilesize
+	nop; delay slot nop
+	addi	r29,r29,#8
+	sgtu	r2,r2,r1
+	beqz	r2,L63_LF11
+	nop; delay slot nop
+	lhi	r1,((_files_LF11)>>16)&0xffff
+	addui	r1,r1,(_files_LF11)&0xffff
+	lw	r2,(r30)
+	add	r4,r0,r2
+	slli	r3,r4,#0x3
+	add	r3,r3,r2
+	slli	r2,r3,#0x3
+	add	r1,r1,r2
+	addi	r2,r0,#1
+	sw	52(r1),r2
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r2,(r30)
+	add	r4,r0,r2
+	slli	r3,r4,#0x3
+	add	r3,r3,r2
+	slli	r2,r3,#0x3
+	lhi	r6,((_files_LF11)>>16)&0xffff
+	addui	r6,r6,(_files_LF11)&0xffff
+	add	r3,r2,r6
+	lw	r2,44(r3)
+	sw	(r1),r2
+	jal	_DfsInodeFilesize
+	nop; delay slot nop
+	addi	r29,r29,#8
+	lw	r2,(r30)
+	add	r4,r0,r2
+	slli	r3,r4,#0x3
+	add	r3,r3,r2
+	slli	r2,r3,#0x3
+	lhi	r6,((_files_LF11)>>16)&0xffff
+	addui	r6,r6,(_files_LF11)&0xffff
+	add	r3,r2,r6
+	lw	r2,48(r3)
+	sub	r1,r1,r2
+	sw	8(r30),r1
+L63_LF11:
+	addi	r29,r29,#-16
+	add	r1,r0,r29
+	lw	r2,(r30)
+	add	r4,r0,r2
+	slli	r3,r4,#0x3
+	add	r3,r3,r2
+	slli	r2,r3,#0x3
+	lhi	r6,((_files_LF11)>>16)&0xffff
+	addui	r6,r6,(_files_LF11)&0xffff
+	add	r3,r2,r6
+	lw	r2,44(r3)
+	sw	(r1),r2
+	lw	r2,4(r30)
+	sw	4(r1),r2
+	lw	r2,(r30)
+	add	r4,r0,r2
+	slli	r3,r4,#0x3
+	add	r3,r3,r2
+	slli	r2,r3,#0x3
+	lhi	r6,((_files_LF11)>>16)&0xffff
+	addui	r6,r6,(_files_LF11)&0xffff
+	add	r3,r2,r6
+	lw	r2,48(r3)
+	sw	8(r1),r2
+	lw	r2,8(r30)
+	sw	12(r1),r2
+	jal	_DfsInodeReadBytes
+	nop; delay slot nop
+	addi	r29,r29,#16
+	sw	-12(r30),r1
+	lw	r1,-12(r30)
+	seqi	r2,r1,#-1
+	beqz	r2,L64_LF11
+	nop; delay slot nop
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((LC9_LF11)>>16)&0xffff
+	addui	r2,r2,(LC9_LF11)&0xffff
+	sw	(r1),r2
+	jal	_printf
+	nop; delay slot nop
+	addi	r29,r29,#8
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((_file_lock_LF11)>>16)&0xffff
+	addui	r2,r2,(_file_lock_LF11)&0xffff
+	lw	r3,(r2)
+	sw	(r1),r3
+	jal	_LockHandleRelease
+	nop; delay slot nop
+	addi	r29,r29,#8
+	snei	r2,r1,#1
+	beqz	r2,L65_LF11
+	nop; delay slot nop
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((LC3_LF11)>>16)&0xffff
+	addui	r2,r2,(LC3_LF11)&0xffff
+	sw	(r1),r2
+	jal	_printf
+	nop; delay slot nop
+	addi	r29,r29,#8
+	addi	r1,r0,#-1
+	j	L59_LF11
+	nop; delay slot nop
+L65_LF11:
+	addi	r1,r0,#-1
+	j	L59_LF11
+	nop; delay slot nop
+L64_LF11:
+	lhi	r1,((_files_LF11)>>16)&0xffff
+	addui	r1,r1,(_files_LF11)&0xffff
+	lw	r2,(r30)
+	add	r4,r0,r2
+	slli	r3,r4,#0x3
+	add	r3,r3,r2
+	slli	r2,r3,#0x3
+	add	r1,r1,r2
+	lw	r2,(r30)
+	add	r4,r0,r2
+	slli	r3,r4,#0x3
+	add	r3,r3,r2
+	slli	r2,r3,#0x3
+	lhi	r6,((_files_LF11)>>16)&0xffff
+	addui	r6,r6,(_files_LF11)&0xffff
+	add	r3,r2,r6
+	lw	r2,48(r3)
+	lw	r3,-12(r30)
+	add	r2,r2,r3
+	sw	48(r1),r2
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((_file_lock_LF11)>>16)&0xffff
+	addui	r2,r2,(_file_lock_LF11)&0xffff
+	lw	r3,(r2)
+	sw	(r1),r3
+	jal	_LockHandleRelease
+	nop; delay slot nop
+	addi	r29,r29,#8
+	snei	r2,r1,#1
+	beqz	r2,L66_LF11
+	nop; delay slot nop
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((LC3_LF11)>>16)&0xffff
+	addui	r2,r2,(LC3_LF11)&0xffff
+	sw	(r1),r2
+	jal	_printf
+	nop; delay slot nop
+	addi	r29,r29,#8
+	addi	r1,r0,#-1
+	j	L59_LF11
+	nop; delay slot nop
+L66_LF11:
+	lw	r1,(r30)
+	add	r3,r0,r1
+	slli	r2,r3,#0x3
+	add	r2,r2,r1
+	slli	r1,r2,#0x3
+	lhi	r6,((_files_LF11)>>16)&0xffff
+	addui	r6,r6,(_files_LF11)&0xffff
+	add	r2,r1,r6
+	lw	r1,52(r2)
+	snei	r2,r1,#0
+	beqz	r2,L67_LF11
+	nop; delay slot nop
+	addi	r1,r0,#-1
+	j	L59_LF11
+	nop; delay slot nop
+L67_LF11:
+	lw	r1,-12(r30)
+	j	L59_LF11
+	nop; delay slot nop
+L59_LF11:
+	lw	r2,0(r29)
+	lw	r3,4(r29)
+	lw	r4,8(r29)
+	lw	r5,12(r29)
+	lw	r6,16(r29)
 	lw	r31,-8(r30)
 	add	r29,r0,r30
 	lw	r30,-4(r30)
 	jr	r31
 	nop
 .endproc _FileRead
+.data
+.align 2
+LC10_LF11:
+.ascii "Error: Write Operation Failed!\n\000"
+.text
 .align 2
 .proc _FileWrite
 .global _FileWrite
 _FileWrite:
-;  Function 'FileWrite'; 0 bytes of locals, 0 regs to save.
+;  Function 'FileWrite'; 8 bytes of locals, 5 regs to save.
 	sw	-4(r29),r30; push fp
 	add	r30,r0,r29; fp = sp
 	sw	-8(r29),r31; push ret addr
-	subui	r29,r29,#8; alloc local storage
-	addi	r1,r0,#-1
-	j	L15_LF11
+	subui	r29,r29,#40; alloc local storage
+	sw	0(r29),r2
+	sw	4(r29),r3
+	sw	8(r29),r4
+	sw	12(r29),r5
+	sw	16(r29),r6
+	add	r2,r0,r29
+	jal	_GetCurrentPid
 	nop; delay slot nop
-L15_LF11:
+	lw	r2,(r30)
+	add	r4,r0,r2
+	slli	r3,r4,#0x3
+	add	r3,r3,r2
+	slli	r2,r3,#0x3
+	lhi	r6,((_files_LF11)>>16)&0xffff
+	addui	r6,r6,(_files_LF11)&0xffff
+	add	r3,r2,r6
+	lw	r2,68(r3)
+	sne	r1,r1,r2
+	beqz	r1,L69_LF11
+	nop; delay slot nop
+	add	r2,r0,r29
+	jal	_GetCurrentPid
+	nop; delay slot nop
+	addi	r29,r29,#-8
+	add	r2,r0,r29
+	lhi	r3,((LC7_LF11)>>16)&0xffff
+	addui	r3,r3,(LC7_LF11)&0xffff
+	sw	(r2),r3
+	sw	4(r2),r1
+	jal	_printf
+	nop; delay slot nop
+	addi	r29,r29,#8
+	addi	r1,r0,#-1
+	j	L68_LF11
+	nop; delay slot nop
+L69_LF11:
+	lw	r1,8(r30)
+	sgti	r2,r1,#4096
+	beqz	r2,L70_LF11
+	nop; delay slot nop
+	addi	r29,r29,#-16
+	add	r1,r0,r29
+	lhi	r2,((LC8_LF11)>>16)&0xffff
+	addui	r2,r2,(LC8_LF11)&0xffff
+	sw	(r1),r2
+	lw	r2,8(r30)
+	sw	4(r1),r2
+	addi	r2,r0,#4096
+	sw	8(r1),r2
+	jal	_printf
+	nop; delay slot nop
+	addi	r29,r29,#16
+	addi	r1,r0,#-1
+	j	L68_LF11
+	nop; delay slot nop
+L70_LF11:
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((_file_lock_LF11)>>16)&0xffff
+	addui	r2,r2,(_file_lock_LF11)&0xffff
+	lw	r3,(r2)
+	sw	(r1),r3
+	jal	_LockHandleAcquire
+	nop; delay slot nop
+	addi	r29,r29,#8
+	snei	r2,r1,#1
+	beqz	r2,L71_LF11
+	nop; delay slot nop
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((LC1_LF11)>>16)&0xffff
+	addui	r2,r2,(LC1_LF11)&0xffff
+	sw	(r1),r2
+	jal	_printf
+	nop; delay slot nop
+	addi	r29,r29,#8
+	addi	r1,r0,#-1
+	j	L68_LF11
+	nop; delay slot nop
+L71_LF11:
+	lw	r1,(r30)
+	add	r3,r0,r1
+	slli	r2,r3,#0x3
+	add	r2,r2,r1
+	slli	r1,r2,#0x3
+	lhi	r6,((_files_LF11)>>16)&0xffff
+	addui	r6,r6,(_files_LF11)&0xffff
+	add	r2,r1,r6
+	lw	r1,48(r2)
+	lw	r3,8(r30)
+	add	r2,r1,r3
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lw	r3,(r30)
+	add	r5,r0,r3
+	slli	r4,r5,#0x3
+	add	r4,r4,r3
+	slli	r3,r4,#0x3
+	lhi	r6,((_files_LF11)>>16)&0xffff
+	addui	r6,r6,(_files_LF11)&0xffff
+	add	r4,r3,r6
+	lw	r3,44(r4)
+	sw	(r1),r3
+	jal	_DfsInodeFilesize
+	nop; delay slot nop
+	addi	r29,r29,#8
+	sgeu	r2,r2,r1
+	beqz	r2,L72_LF11
+	nop; delay slot nop
+L72_LF11:
+	lhi	r1,((_files_LF11)>>16)&0xffff
+	addui	r1,r1,(_files_LF11)&0xffff
+	lw	r2,(r30)
+	add	r4,r0,r2
+	slli	r3,r4,#0x3
+	add	r3,r3,r2
+	slli	r2,r3,#0x3
+	add	r1,r1,r2
+	addi	r2,r0,#1
+	sw	52(r1),r2
+	addi	r29,r29,#-16
+	add	r1,r0,r29
+	lw	r2,(r30)
+	add	r4,r0,r2
+	slli	r3,r4,#0x3
+	add	r3,r3,r2
+	slli	r2,r3,#0x3
+	lhi	r6,((_files_LF11)>>16)&0xffff
+	addui	r6,r6,(_files_LF11)&0xffff
+	add	r3,r2,r6
+	lw	r2,44(r3)
+	sw	(r1),r2
+	lw	r2,4(r30)
+	sw	4(r1),r2
+	lw	r2,(r30)
+	add	r4,r0,r2
+	slli	r3,r4,#0x3
+	add	r3,r3,r2
+	slli	r2,r3,#0x3
+	lhi	r6,((_files_LF11)>>16)&0xffff
+	addui	r6,r6,(_files_LF11)&0xffff
+	add	r3,r2,r6
+	lw	r2,48(r3)
+	sw	8(r1),r2
+	lw	r2,8(r30)
+	sw	12(r1),r2
+	jal	_DfsInodeWriteBytes
+	nop; delay slot nop
+	addi	r29,r29,#16
+	sw	-12(r30),r1
+	lw	r1,-12(r30)
+	seqi	r2,r1,#-1
+	beqz	r2,L73_LF11
+	nop; delay slot nop
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((LC10_LF11)>>16)&0xffff
+	addui	r2,r2,(LC10_LF11)&0xffff
+	sw	(r1),r2
+	jal	_printf
+	nop; delay slot nop
+	addi	r29,r29,#8
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((_file_lock_LF11)>>16)&0xffff
+	addui	r2,r2,(_file_lock_LF11)&0xffff
+	lw	r3,(r2)
+	sw	(r1),r3
+	jal	_LockHandleRelease
+	nop; delay slot nop
+	addi	r29,r29,#8
+	snei	r2,r1,#1
+	beqz	r2,L74_LF11
+	nop; delay slot nop
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((LC3_LF11)>>16)&0xffff
+	addui	r2,r2,(LC3_LF11)&0xffff
+	sw	(r1),r2
+	jal	_printf
+	nop; delay slot nop
+	addi	r29,r29,#8
+	addi	r1,r0,#-1
+	j	L68_LF11
+	nop; delay slot nop
+L74_LF11:
+	addi	r1,r0,#-1
+	j	L68_LF11
+	nop; delay slot nop
+L73_LF11:
+	lhi	r1,((_files_LF11)>>16)&0xffff
+	addui	r1,r1,(_files_LF11)&0xffff
+	lw	r2,(r30)
+	add	r4,r0,r2
+	slli	r3,r4,#0x3
+	add	r3,r3,r2
+	slli	r2,r3,#0x3
+	add	r1,r1,r2
+	lw	r2,(r30)
+	add	r4,r0,r2
+	slli	r3,r4,#0x3
+	add	r3,r3,r2
+	slli	r2,r3,#0x3
+	lhi	r6,((_files_LF11)>>16)&0xffff
+	addui	r6,r6,(_files_LF11)&0xffff
+	add	r3,r2,r6
+	lw	r2,48(r3)
+	lw	r3,-12(r30)
+	add	r2,r2,r3
+	sw	48(r1),r2
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((_file_lock_LF11)>>16)&0xffff
+	addui	r2,r2,(_file_lock_LF11)&0xffff
+	lw	r3,(r2)
+	sw	(r1),r3
+	jal	_LockHandleRelease
+	nop; delay slot nop
+	addi	r29,r29,#8
+	snei	r2,r1,#1
+	beqz	r2,L75_LF11
+	nop; delay slot nop
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((LC3_LF11)>>16)&0xffff
+	addui	r2,r2,(LC3_LF11)&0xffff
+	sw	(r1),r2
+	jal	_printf
+	nop; delay slot nop
+	addi	r29,r29,#8
+	addi	r1,r0,#-1
+	j	L68_LF11
+	nop; delay slot nop
+L75_LF11:
+	lw	r1,-12(r30)
+	j	L68_LF11
+	nop; delay slot nop
+L68_LF11:
+	lw	r2,0(r29)
+	lw	r3,4(r29)
+	lw	r4,8(r29)
+	lw	r5,12(r29)
+	lw	r6,16(r29)
 	lw	r31,-8(r30)
 	add	r29,r0,r30
 	lw	r30,-4(r30)
@@ -26544,9 +27973,9 @@ _FileSeek:
 	sw	-8(r29),r31; push ret addr
 	subui	r29,r29,#8; alloc local storage
 	addi	r1,r0,#-1
-	j	L16_LF11
+	j	L76_LF11
 	nop; delay slot nop
-L16_LF11:
+L76_LF11:
 	lw	r31,-8(r30)
 	add	r29,r0,r30
 	lw	r30,-4(r30)
@@ -26563,19 +27992,26 @@ _FileDelete:
 	sw	-8(r29),r31; push ret addr
 	subui	r29,r29,#8; alloc local storage
 	addi	r1,r0,#-1
-	j	L17_LF11
+	j	L77_LF11
 	nop; delay slot nop
-L17_LF11:
+L77_LF11:
 	lw	r31,-8(r30)
 	add	r29,r0,r30
 	lw	r30,-4(r30)
 	jr	r31
 	nop
 .endproc _FileDelete
+.data
+.align 2
+_files_LF11:
+.space 1080
+.align 2
+_file_lock_LF11:
+.space 4
 ;;; This file just includes a single variable that contains the last address
 ;;; in the operating system.  The rest of memory is available for use by
 ;;; processes.
-.data
+
 .align 2
 .global _lastosaddress
 _lastosaddress:

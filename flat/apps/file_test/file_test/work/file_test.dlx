@@ -1,7 +1,7 @@
 ; Linked by DLX-LD.
 ; MemSize 24576
-; Data size: 627
-; Text size: 5576
+; Data size: 654
+; Text size: 5620
 ; Stack size: 8192
 .text 0x1000
 .data 0x3000
@@ -54,40 +54,46 @@ LC14_LF0:
 .ascii "w\000"
 .align 2
 LC15_LF0:
-.ascii "open file - handle %d\n\000"
+.ascii "FILE OPEN START\n\n\000"
 .align 2
 LC16_LF0:
-.ascii "write to file, return %d\n\000"
+.ascii "open file - handle %d\n\000"
 .align 2
 LC17_LF0:
-.ascii "close file, return %d\n\000"
+.ascii "write to file, return %d\n\000"
 .align 2
 LC18_LF0:
-.ascii "open same file again, return %d\n\000"
+.ascii "close file, return %d\n\000"
 .align 2
 LC19_LF0:
-.ascii "read file into read_data, return %d\n\000"
+.ascii "open same file again, return %d\n\000"
 .align 2
 LC20_LF0:
-.ascii "print read_data content: \n\000"
+.ascii "read file into read_data, return %d\n\000"
 .align 2
 LC21_LF0:
-.ascii "\n\ntest6 integreated test with seek\n\000"
+.ascii "print read_data content: \n\000"
 .align 2
 LC22_LF0:
-.ascii "write to file 2000, return %d\n\000"
+.ascii "\n\ntest6 integreated test with seek\n\000"
 .align 2
 LC23_LF0:
-.ascii "file seek -2010, return %d\n\000"
+.ascii "write to file 2000, return %d\n\000"
 .align 2
 LC24_LF0:
-.ascii "print read_data content (should only see 10 z characters): \n\000"
+.ascii "file seek -2010, return %d\n\000"
 .align 2
 LC25_LF0:
-.ascii "\n\ntest7\n\000"
+.ascii "print read_data content (should only see 10 z characters): \n\000"
 .align 2
 LC26_LF0:
+.ascii "\n\ntest7\n\000"
+.align 2
+LC27_LF0:
 .ascii "called file_delete, return %d\n\000"
+.align 2
+LC28_LF0:
+.ascii "waasd\000"
 .text
 .align 2
 .proc _main
@@ -279,6 +285,11 @@ L15_LF0:
 	lhi	r8,((LC15_LF0)>>16)&0xffff
 	addui	r8,r8,(LC15_LF0)&0xffff
 	sw	(r29),r8
+	jal	_Printf
+	nop; not filled.
+	lhi	r8,((LC16_LF0)>>16)&0xffff
+	addui	r8,r8,(LC16_LF0)&0xffff
+	sw	(r29),r8
 	sw	4(r29),r4
 	jal	_Printf
 	nop; not filled.
@@ -302,8 +313,8 @@ L20_LF0:
 	jal	_file_write
 	nop; not filled.
 	add	r4,r0,r1
-	lhi	r8,((LC16_LF0)>>16)&0xffff
-	addui	r8,r8,(LC16_LF0)&0xffff
+	lhi	r8,((LC17_LF0)>>16)&0xffff
+	addui	r8,r8,(LC17_LF0)&0xffff
 	sw	(r29),r8
 	sw	4(r29),r4
 	jal	_Printf
@@ -312,8 +323,8 @@ L20_LF0:
 	jal	_file_close
 	nop; not filled.
 	add	r4,r0,r1
-	lhi	r8,((LC17_LF0)>>16)&0xffff
-	addui	r8,r8,(LC17_LF0)&0xffff
+	lhi	r8,((LC18_LF0)>>16)&0xffff
+	addui	r8,r8,(LC18_LF0)&0xffff
 	sw	(r29),r8
 	sw	4(r29),r4
 	jal	_Printf
@@ -325,8 +336,8 @@ L20_LF0:
 	jal	_file_open
 	nop; not filled.
 	add	r4,r0,r1
-	lhi	r8,((LC18_LF0)>>16)&0xffff
-	addui	r8,r8,(LC18_LF0)&0xffff
+	lhi	r8,((LC19_LF0)>>16)&0xffff
+	addui	r8,r8,(LC19_LF0)&0xffff
 	sw	(r29),r8
 	sw	4(r29),r4
 	jal	_Printf
@@ -351,14 +362,14 @@ L25_LF0:
 	jal	_file_read
 	nop; not filled.
 	add	r4,r0,r1
-	lhi	r8,((LC19_LF0)>>16)&0xffff
-	addui	r8,r8,(LC19_LF0)&0xffff
+	lhi	r8,((LC20_LF0)>>16)&0xffff
+	addui	r8,r8,(LC20_LF0)&0xffff
 	sw	(r29),r8
 	sw	4(r29),r4
 	jal	_Printf
 	nop; not filled.
-	lhi	r8,((LC20_LF0)>>16)&0xffff
-	addui	r8,r8,(LC20_LF0)&0xffff
+	lhi	r8,((LC21_LF0)>>16)&0xffff
+	addui	r8,r8,(LC21_LF0)&0xffff
 	sw	(r29),r8
 	jal	_Printf
 	nop; not filled.
@@ -384,8 +395,8 @@ L30_LF0:
 	sw	(r29),r8
 	jal	_Printf
 	nop; not filled.
-	lhi	r8,((LC21_LF0)>>16)&0xffff
-	addui	r8,r8,(LC21_LF0)&0xffff
+	lhi	r8,((LC22_LF0)>>16)&0xffff
+	addui	r8,r8,(LC22_LF0)&0xffff
 	sw	(r29),r8
 	jal	_Printf
 	nop; not filled.
@@ -408,8 +419,8 @@ L35_LF0:
 	jal	_file_write
 	nop; not filled.
 	add	r4,r0,r1
-	lhi	r8,((LC22_LF0)>>16)&0xffff
-	addui	r8,r8,(LC22_LF0)&0xffff
+	lhi	r8,((LC23_LF0)>>16)&0xffff
+	addui	r8,r8,(LC23_LF0)&0xffff
 	sw	(r29),r8
 	sw	4(r29),r4
 	jal	_Printf
@@ -422,8 +433,8 @@ L35_LF0:
 	jal	_file_seek
 	nop; not filled.
 	add	r4,r0,r1
-	lhi	r8,((LC23_LF0)>>16)&0xffff
-	addui	r8,r8,(LC23_LF0)&0xffff
+	lhi	r8,((LC24_LF0)>>16)&0xffff
+	addui	r8,r8,(LC24_LF0)&0xffff
 	sw	(r29),r8
 	sw	4(r29),r4
 	jal	_Printf
@@ -446,8 +457,8 @@ L40_LF0:
 	sw	8(r29),r8
 	jal	_file_read
 	nop; not filled.
-	lhi	r8,((LC24_LF0)>>16)&0xffff
-	addui	r8,r8,(LC24_LF0)&0xffff
+	lhi	r8,((LC25_LF0)>>16)&0xffff
+	addui	r8,r8,(LC25_LF0)&0xffff
 	sw	(r29),r8
 	jal	_Printf
 	nop; not filled.
@@ -477,14 +488,14 @@ L45_LF0:
 	jal	_file_close
 	nop; not filled.
 	add	r4,r0,r1
-	lhi	r8,((LC17_LF0)>>16)&0xffff
-	addui	r8,r8,(LC17_LF0)&0xffff
+	lhi	r8,((LC18_LF0)>>16)&0xffff
+	addui	r8,r8,(LC18_LF0)&0xffff
 	sw	(r29),r8
 	sw	4(r29),r4
 	jal	_Printf
 	nop; not filled.
-	lhi	r8,((LC25_LF0)>>16)&0xffff
-	addui	r8,r8,(LC25_LF0)&0xffff
+	lhi	r8,((LC26_LF0)>>16)&0xffff
+	addui	r8,r8,(LC26_LF0)&0xffff
 	sw	(r29),r8
 	jal	_Printf
 	nop; not filled.
@@ -492,11 +503,17 @@ L45_LF0:
 	jal	_file_delete
 	nop; not filled.
 	add	r4,r0,r1
-	lhi	r8,((LC26_LF0)>>16)&0xffff
-	addui	r8,r8,(LC26_LF0)&0xffff
+	lhi	r8,((LC27_LF0)>>16)&0xffff
+	addui	r8,r8,(LC27_LF0)&0xffff
 	sw	(r29),r8
 	sw	4(r29),r4
 	jal	_Printf
+	nop; not filled.
+	sw	(r29),r5
+	lhi	r1,((LC28_LF0)>>16)&0xffff
+	addui	r1,r1,(LC28_LF0)&0xffff
+	sw	4(r29),r1
+	jal	_file_open
 	nop; not filled.
 	addi	r29,r29,#8
 	jal	_exit
