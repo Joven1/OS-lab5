@@ -29,12 +29,13 @@ void main (int argc, char *argv[])
 	for (i=0; i<2048; i++) {
 		data[i] = 'A';
 	}
+	
 	retval = file_write(handle, (void *)data, 512);
 	Printf("called file_write, return %d\n", retval);
 	retval = file_close(handle);
 	Printf("called file_close, return %d\n", retval);
-
-	/////////////test 3
+	
+	/////////////test 4
 	Printf("\n\ntest4\n");
 	retval = file_open(file1, "rw");
 	Printf("called file_open, return %d\n", retval);
@@ -55,7 +56,7 @@ void main (int argc, char *argv[])
 	Printf("\n\ntest5 integreated test\n");
 	retval = file_open(file2, "w");
 	Printf("FILE OPEN START\n\n");	
-Printf("open file - handle %d\n", retval);
+	Printf("open file - handle %d\n", retval);
 	handle = retval;
 	for (i=0; i<3333; i++) {
 		data[i] = 'z';
@@ -107,4 +108,5 @@ Printf("open file - handle %d\n", retval);
 	Printf("called file_delete, return %d\n", retval);
 
 	retval = file_open(handle, "waasd");
+	
 }

@@ -350,7 +350,7 @@ void RunOSTests() {
     printf("ostests: deleting inode %u (meep.txt - ALREADY DELETED) succeeded\n", handleMeep);
     GracefulExit();
   }
-  
+ 	printf("we are finally done!\n"); 
   return;
 }
 

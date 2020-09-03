@@ -6,7 +6,7 @@ then
 	echo "Error Empty String"
 else
 	git add *
-	git commit -m "$1"
+	git commit -m "Finally finished q1 - q6!"
 	git push
 fi
 

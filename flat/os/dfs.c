@@ -1119,7 +1119,6 @@ int DfsInodeWriteBytes(uint32 handle, void *mem, int start_byte, int num_bytes)
 			}
 		}
 	}
-	
 //Write in the Starting Bytes
 
 	//First Zero Out our Data Block

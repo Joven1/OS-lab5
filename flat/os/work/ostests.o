@@ -402,6 +402,9 @@ LC51:
 	.align 2
 LC52:
 	.ascii "ostests: deleting inode %u (meep.txt - ALREADY DELETED) succeeded\n\000"
+	.align 2
+LC53:
+	.ascii "we are finally done!\n\000"
 .text
 	.align 2
 .proc _RunOSTests
@@ -2344,6 +2347,14 @@ L50:
 	jal	_GracefulExit
 	nop	; delay slot nop
 L51:
+	addi	r29,r29,#-8
+	add	r1,r0,r29
+	lhi	r2,((LC53)>>16)&0xffff
+	addui	r2,r2,(LC53)&0xffff
+	sw	(r1),r2
+	jal	_printf
+	nop	; delay slot nop
+	addi	r29,r29,#8
 	j	L12
 	nop	; delay slot nop
 L12:

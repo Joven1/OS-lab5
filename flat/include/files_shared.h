@@ -21,10 +21,9 @@ typedef struct file_descriptor {
   // STUDENT: put file descriptor info here
 	char  filename[FILE_MAX_FILENAME_LENGTH];
 
-	uint32 inode_handle;
-	uint32 current_position;
-	bool eof;
-	bool open;
+	uint32 inode_handle; //Inode file is stored in 
+	uint32 current_position; //Position of marker
+	bool eof; //EOF flag
 
 	//Indicates mode we are in
 	enum mode_status mode; 
